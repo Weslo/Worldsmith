@@ -21,7 +21,8 @@ namespace Worldsmith
 
         private string ResourcesDirectory { get { return projectRoot + "\\Resources\\"; } }
 
-        private World world;
+        public World World { get; set; }
+
         private List<Map> openMaps = new List<Map>();
 
         private Map CurrentOpenMap { get { return openMaps[mapTabControl.SelectedIndex]; } }
@@ -35,11 +36,10 @@ namespace Worldsmith
 
         private void newWorldToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Browse for project directory.
-            projectFolderBrowserDialog.ShowDialog();
-            AssignProjectFolder(projectFolderBrowserDialog.SelectedPath);
-
-            CreateNewWorld();
+            NewWorldForm newWorldForm = new NewWorldForm();
+            newWorldForm.ShowDialog();
+            
+            CreateNewWorld(newWorldForm);
         }
 
         private void openWorldToolStripMenuItem_Click(object sender, EventArgs e)
@@ -52,8 +52,8 @@ namespace Worldsmith
 
             StreamReader reader = new StreamReader(projectRoot + "/Test World.json");
             string input = reader.ReadToEnd();
-            world = JsonConvert.DeserializeObject<World>(input);
-            OpenMapInNewTab(world.Maps["World Map"]);
+            World = JsonConvert.DeserializeObject<World>(input);
+            OpenMapInNewTab(World.Maps["World Map"]);
         }
 
         private void saveAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -92,26 +92,30 @@ namespace Worldsmith
             }
         }
 
-        public void CreateNewWorld()
+        public void CreateNewWorld(NewWorldForm form)
         {
-            if (projectRoot == null)
+            // Make sure the form is valid before proceeding.
+            if (form.Valid)
             {
-                return;
+                if (projectRoot == null)
+                {
+                    return;
+                }
+                // Instantiate a new world and clear the current maps.
+                World = new World("Test World");
+                mapTabControl.TabPages.Clear();
+                openMaps.Clear();
+
+                // Create the world map for the user.
+                Map worldMap = new Map("World Map");
+                World.AddMap(worldMap);
+
+                // Open the world map in the tab control.
+                OpenMapInNewTab(worldMap);
+
+                // Save the new world.
+                SaveWorld();
             }
-            // Instantiate a new world and clear the current maps.
-            world = new World("Test World");
-            mapTabControl.TabPages.Clear();
-            openMaps.Clear();
-            
-            // Create the world map for the user.
-            Map worldMap = new Map("World Map");
-            world.AddMap(worldMap);
-
-            // Open the world map in the tab control.
-            OpenMapInNewTab(worldMap);
-
-            // Save the new world.
-            SaveWorld();
         }
 
         public void AssignProjectFolder(string filepath)
@@ -133,7 +137,7 @@ namespace Worldsmith
                 return;
             }
             // World doesn't exist.
-            if (world == null)
+            if (World == null)
             {
                 // TODO: Handle issue that world does not exist.
                 throw new Exception("World does not exist.");
@@ -141,8 +145,8 @@ namespace Worldsmith
             // Success!
             else
             {
-                string output = world.ToString();
-                StreamWriter writer = new StreamWriter(projectRoot + "\\" + world.Name + ".json");
+                string output = World.ToString();
+                StreamWriter writer = new StreamWriter(projectRoot + "\\" + World.Name + ".json");
                 writer.Write(output);
                 writer.Close();
                 writer.Dispose();
