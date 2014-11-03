@@ -42,11 +42,9 @@
             this.wToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapTabControl = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.openImageDialogue = new System.Windows.Forms.OpenFileDialog();
             this.projectFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.mainMenuStrip.SuspendLayout();
-            this.mapTabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenuStrip
@@ -79,14 +77,16 @@
             // newWorldToolStripMenuItem
             // 
             this.newWorldToolStripMenuItem.Name = "newWorldToolStripMenuItem";
-            this.newWorldToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.newWorldToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.newWorldToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.newWorldToolStripMenuItem.Text = "New World";
             this.newWorldToolStripMenuItem.Click += new System.EventHandler(this.newWorldToolStripMenuItem_Click);
             // 
             // openWorldToolStripMenuItem
             // 
             this.openWorldToolStripMenuItem.Name = "openWorldToolStripMenuItem";
-            this.openWorldToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.openWorldToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openWorldToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.openWorldToolStripMenuItem.Text = "Open World";
             this.openWorldToolStripMenuItem.Click += new System.EventHandler(this.openWorldToolStripMenuItem_Click);
             // 
@@ -98,7 +98,8 @@
             // saveAllToolStripMenuItem
             // 
             this.saveAllToolStripMenuItem.Name = "saveAllToolStripMenuItem";
-            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.saveAllToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.saveAllToolStripMenuItem.Text = "Save";
             this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.saveAllToolStripMenuItem_Click);
             // 
@@ -148,7 +149,6 @@
             // 
             // mapTabControl
             // 
-            this.mapTabControl.Controls.Add(this.tabPage1);
             this.mapTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mapTabControl.Location = new System.Drawing.Point(0, 24);
             this.mapTabControl.Name = "mapTabControl";
@@ -156,22 +156,13 @@
             this.mapTabControl.Size = new System.Drawing.Size(794, 535);
             this.mapTabControl.TabIndex = 1;
             // 
-            // tabPage1
-            // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(786, 509);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
             // openImageDialogue
             // 
             this.openImageDialogue.FileOk += new System.ComponentModel.CancelEventHandler(this.openImageDialogue_FileOk);
             // 
             // projectFolderBrowserDialog
             // 
-            this.projectFolderBrowserDialog.Description = "Select a folder to use as the root directory for this Worldsmith project.";
+            this.projectFolderBrowserDialog.Description = "Select the root folder of the Worldsmith project.";
             // 
             // ApplicationForm
             // 
@@ -185,7 +176,6 @@
             this.Text = "Worldsmith";
             this.mainMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.PerformLayout();
-            this.mapTabControl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,7 +198,6 @@
         private System.Windows.Forms.ToolStripMenuItem addImageToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openImageDialogue;
         private System.Windows.Forms.ToolStripMenuItem openWorldToolStripMenuItem;
-        private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.FolderBrowserDialog projectFolderBrowserDialog;
     }
 }

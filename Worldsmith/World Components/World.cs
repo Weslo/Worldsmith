@@ -10,6 +10,8 @@ namespace Worldsmith
     public class World
     {
         public string Name { get; set; }
+        public string Description { get; set; }
+        public string WorldMapName { get; set; }
         public Dictionary<string, Map> Maps { get; set; }
 
         public World(string name)
@@ -25,7 +27,7 @@ namespace Worldsmith
 
         public override string ToString()
         {
-            string output = JsonConvert.SerializeObject(this);
+            string output = JsonConvert.SerializeObject(this, Formatting.Indented);
             return output;
         }
     }

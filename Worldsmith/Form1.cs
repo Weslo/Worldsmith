@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using System.Threading;
 #endregion Using Statements
 
 namespace Worldsmith
@@ -26,6 +27,8 @@ namespace Worldsmith
         private List<Map> openMaps = new List<Map>();
 
         private Map CurrentOpenMap { get { return openMaps[mapTabControl.SelectedIndex]; } }
+
+        private Point prevMousePos = Point.Empty;
 
         #region Forms Initialization
 
@@ -52,8 +55,14 @@ namespace Worldsmith
 
             StreamReader reader = new StreamReader(projectRoot + "/Test World.json");
             string input = reader.ReadToEnd();
+            reader.Close();
+            reader.Dispose();
+
             World = JsonConvert.DeserializeObject<World>(input);
-            OpenMapInNewTab(World.Maps["World Map"]);
+
+            mapTabControl.TabPages.Clear();
+            openMaps.Clear();
+            OpenMapInNewTab(World.Maps[World.WorldMapName]);
         }
 
         private void saveAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -83,13 +92,86 @@ namespace Worldsmith
         public void OpenMapInNewTab(Map map)
         {
             TabPage newMapPage = new TabPage(map.Name);
+            PictureBox tabPictureBox = new PictureBox();
+            newMapPage.Controls.Add(tabPictureBox);
             mapTabControl.TabPages.Add(newMapPage);
             openMaps.Add(map);
 
             if (map.Images.Count > 0)
             {
-                newMapPage.BackgroundImage = Image.FromFile(ResourcesDirectory + map.Images["Main"]);
+                tabPictureBox.Image = Image.FromFile(ResourcesDirectory + map.Images["Main"]);
+                tabPictureBox.Size = tabPictureBox.Image.Size;
+                /*
+                tabPictureBox.MouseDown += tabPictureBox_MouseDown;
+                tabPictureBox.MouseUp += tabPictureBox_MouseUp;
+                 */
+
+                tabPictureBox.MouseMove += tabPictureBox_MouseMove;
             }
+        }
+
+        void tabPictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            PictureBox pic = sender as PictureBox;
+            if ((Control.MouseButtons & MouseButtons.Left) != 0)
+            {
+                int deltaX = MousePosition.X - prevMousePos.X;
+                int deltaY = MousePosition.Y - prevMousePos.Y;
+                Point newLocation = new Point(pic.Location.X + deltaX, pic.Location.Y + deltaY);
+
+                Rectangle bounds = pic.Parent.Bounds;
+
+                // Clamp y properly
+                if (pic.Height > bounds.Height)
+                {
+                    if (newLocation.Y > 0)
+                    {
+                        newLocation.Y = 0;
+                    }
+                    if (newLocation.Y < bounds.Height - pic.Height)
+                    {
+                        newLocation.Y = bounds.Height - pic.Height;
+                    }
+                }
+                else
+                {
+                    if (newLocation.Y < 0)
+                    {
+                        newLocation.Y = 0;
+                    }
+                    if (newLocation.Y > bounds.Height - pic.Height)
+                    {
+                        newLocation.Y = bounds.Height - pic.Height;
+                    }
+                }
+
+                // Clamp x properly
+                if (pic.Width > bounds.Width)
+                {
+                    if (newLocation.X > 0)
+                    {
+                        newLocation.X = 0;
+                    }
+                    if (newLocation.X < bounds.Width - pic.Width)
+                    {
+                        newLocation.X = bounds.Width - pic.Width;
+                    }
+                }
+                else
+                {
+                    if (newLocation.X < 0)
+                    {
+                        newLocation.X = 0;
+                    }
+                    if (newLocation.X > bounds.Width - pic.Width)
+                    {
+                        newLocation.X = bounds.Width - pic.Width;
+                    }
+                }
+
+                pic.Location = newLocation;
+            }
+            prevMousePos = MousePosition;
         }
 
         public void CreateNewWorld(NewWorldForm form)
@@ -97,17 +179,21 @@ namespace Worldsmith
             // Make sure the form is valid before proceeding.
             if (form.Valid)
             {
-                if (projectRoot == null)
-                {
-                    return;
-                }
-                // Instantiate a new world and clear the current maps.
-                World = new World("Test World");
+
+                // TODO: Check for unsaved changes and prompt a save.
+
+                // Instantiate new world.
+                World = new World(form.WorldName);
+                World.Description = form.WorldDescription;
+                World.WorldMapName = form.WorldMapName;
+                AssignProjectFolder(form.WorldDirectory);
+
+                // Clear map controls.
                 mapTabControl.TabPages.Clear();
                 openMaps.Clear();
 
                 // Create the world map for the user.
-                Map worldMap = new Map("World Map");
+                Map worldMap = new Map(World.WorldMapName);
                 World.AddMap(worldMap);
 
                 // Open the world map in the tab control.

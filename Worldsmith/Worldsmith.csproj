@@ -62,10 +62,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="NewWorldForm.cs">
+    <Compile Include="Forms\NewWorldForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NewWorldForm.Designer.cs">
+    <Compile Include="Forms\NewWorldForm.Designer.cs">
       <DependentUpon>NewWorldForm.cs</DependentUpon>
     </Compile>
     <Compile Include="World Components\Landmark.cs" />
@@ -76,7 +76,7 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NewWorldForm.resx">
+    <EmbeddedResource Include="Forms\NewWorldForm.resx">
       <DependentUpon>NewWorldForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -102,9 +102,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
