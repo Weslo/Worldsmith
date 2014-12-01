@@ -21,6 +21,7 @@ namespace Worldsmith
 
         public void AddLandmark(Landmark landmark)
         {
+            if (Landmarks.ContainsKey(landmark.Name)) return;
             Landmarks.Add(landmark.Name, landmark);
         }
 

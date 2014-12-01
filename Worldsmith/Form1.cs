@@ -29,6 +29,7 @@ namespace Worldsmith
         private Map CurrentOpenMap { get { return openMaps[mapTabControl.SelectedIndex]; } }
 
         private Point prevMousePos = Point.Empty;
+        private Point cachedMousePos = Point.Empty;
 
         #region Forms Initialization
 
@@ -47,22 +48,29 @@ namespace Worldsmith
 
         private void openWorldToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Browse for project directory.
-            projectFolderBrowserDialog.ShowDialog();
-            AssignProjectFolder(projectFolderBrowserDialog.SelectedPath);
+            try
+            {
+                // Browse for project directory.
+                projectFolderBrowserDialog.ShowDialog();
+                AssignProjectFolder(projectFolderBrowserDialog.SelectedPath);
 
-            if (projectRoot == null) return;
+                if (projectRoot == null) return;
 
-            StreamReader reader = new StreamReader(projectRoot + "/Test World.json");
-            string input = reader.ReadToEnd();
-            reader.Close();
-            reader.Dispose();
+                StreamReader reader = new StreamReader(projectRoot + "/" + "Test World" + ".json");
+                string input = reader.ReadToEnd();
+                reader.Close();
+                reader.Dispose();
 
-            World = JsonConvert.DeserializeObject<World>(input);
+                World = JsonConvert.DeserializeObject<World>(input);
 
-            mapTabControl.TabPages.Clear();
-            openMaps.Clear();
-            OpenMapInNewTab(World.Maps[World.WorldMapName]);
+                mapTabControl.TabPages.Clear();
+                openMaps.Clear();
+                OpenMapInNewTab(World.Maps[World.WorldMapName]);
+            }
+            catch
+            {
+                MessageBox.Show("Error loading World. Exited process early.");
+            }
         }
 
         private void saveAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -81,36 +89,10 @@ namespace Worldsmith
             string saveName = ResourcesDirectory + "TestImage.jpg";
             File.Copy(path, saveName, true);
             CurrentOpenMap.AddImage("Main", "TestImage.jpg");
-            string imagePath = ResourcesDirectory + CurrentOpenMap.Images["Main"];
-            mapTabControl.SelectedTab.BackgroundImage = Image.FromFile(imagePath);
+            SetActiveMapImage(mapTabControl.SelectedTab, CurrentOpenMap, "Main");
         }
 
-        #endregion Forms Initialization
-
-        #region Public Methods
-
-        public void OpenMapInNewTab(Map map)
-        {
-            TabPage newMapPage = new TabPage(map.Name);
-            PictureBox tabPictureBox = new PictureBox();
-            newMapPage.Controls.Add(tabPictureBox);
-            mapTabControl.TabPages.Add(newMapPage);
-            openMaps.Add(map);
-
-            if (map.Images.Count > 0)
-            {
-                tabPictureBox.Image = Image.FromFile(ResourcesDirectory + map.Images["Main"]);
-                tabPictureBox.Size = tabPictureBox.Image.Size;
-                /*
-                tabPictureBox.MouseDown += tabPictureBox_MouseDown;
-                tabPictureBox.MouseUp += tabPictureBox_MouseUp;
-                 */
-
-                tabPictureBox.MouseMove += tabPictureBox_MouseMove;
-            }
-        }
-
-        void tabPictureBox_MouseMove(object sender, MouseEventArgs e)
+        private void tabPictureBox_MouseMove(object sender, MouseEventArgs e)
         {
             PictureBox pic = sender as PictureBox;
             if ((Control.MouseButtons & MouseButtons.Left) != 0)
@@ -174,7 +156,51 @@ namespace Worldsmith
             prevMousePos = MousePosition;
         }
 
-        public void CreateNewWorld(NewWorldForm form)
+        private void mapContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            cachedMousePos = Cursor.Position;
+        }
+
+        private void createLandmarkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            // Props to Cody Gray on Stack Overflow
+            // Try to cast the sender to a ToolStripItem
+            ToolStripItem menuItem = sender as ToolStripItem;
+            if (menuItem != null)
+            {
+                // Retrieve the ContextMenuStrip that owns this ToolStripItem
+                ContextMenuStrip owner = menuItem.Owner as ContextMenuStrip;
+                if (owner != null)
+                {
+                    // Get the control that is displaying this context menu
+                    Control sourceControl = owner.SourceControl;
+                    Point controlPoint = sourceControl.PointToClient(cachedMousePos);
+                    CreateLandmarkForm form = new CreateLandmarkForm(CurrentOpenMap);
+                    form.ShowDialog();
+                    if (form.Valid)
+                    {
+                        Landmark landmark = CreateNewLandmark(form);
+                        ConstructLandmarkButton(landmark, sourceControl, landmark.Position);
+                    }
+                }
+            }
+            cachedMousePos = Point.Empty;
+        }
+
+        #endregion Forms Initialization
+
+        #region Public Methods
+
+        public void OpenMapInNewTab(Map map)
+        {
+            TabPage newMapPage = new TabPage(map.Name);
+            mapTabControl.TabPages.Add(newMapPage);
+            openMaps.Add(map);
+            SetActiveMapImage(mapTabControl.SelectedTab, CurrentOpenMap, "Main");
+        }
+
+        public World CreateNewWorld(NewWorldForm form)
         {
             // Make sure the form is valid before proceeding.
             if (form.Valid)
@@ -201,7 +227,35 @@ namespace Worldsmith
 
                 // Save the new world.
                 SaveWorld();
+
+                // Return reference to new World.
+                return World;
             }
+
+            // Failure, return null.
+            return null;
+        }
+
+        public Landmark CreateNewLandmark(CreateLandmarkForm form)
+        {
+            // Make sure the form is valid before proceeding.
+            if (form.Valid)
+            {
+
+                // TODO: Check for unsaved changes and prompt a save.
+
+                // Instantiate new landmark.
+                Landmark landmark = new Landmark(form.Name, cachedMousePos);
+
+                // Apply changes to map.
+                CurrentOpenMap.AddLandmark(landmark);
+
+                // Return reference to the new landmark.
+                return landmark;
+            }
+
+            // Failure, return null.
+            return null;
         }
 
         public void AssignProjectFolder(string filepath)
@@ -243,6 +297,38 @@ namespace Worldsmith
                     Directory.CreateDirectory(ResourcesDirectory);
                 }
             }
+        }
+
+        public void SetActiveMapImage(TabPage tab, Map map, string imageKey)
+        {
+            tab.Controls.Clear();
+            PictureBox tabPictureBox = new PictureBox();
+            tabPictureBox.ContextMenuStrip = mapContextMenuStrip;
+            tab.Controls.Add(tabPictureBox);
+
+            if (map.Images.Count > 0)
+            {
+                tabPictureBox.Image = Image.FromFile(ResourcesDirectory + map.Images[imageKey]);
+                tabPictureBox.Size = tabPictureBox.Image.Size;
+
+                tabPictureBox.MouseMove += tabPictureBox_MouseMove;
+            }
+
+            foreach (Landmark l in map.Landmarks.Values)
+            {
+                ConstructLandmarkButton(l, tabPictureBox, l.Position);
+            }
+        }
+
+        public void ConstructLandmarkButton(Landmark landmark, Control container, Point position)
+        {
+            Button btn = new Button();
+            container.Controls.Add(btn);
+            btn.Name = "btn" + landmark.Name;
+            btn.Tag = landmark.Name;
+            btn.Width = 30;
+            btn.Height = 30;
+            btn.Location = new Point(position.X - btn.Width / 2, position.Y - btn.Height / 2);
         }
 
         #endregion Public Methods

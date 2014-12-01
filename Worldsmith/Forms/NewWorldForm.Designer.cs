@@ -63,20 +63,20 @@
             // 
             // label1
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(92, 9);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(194, 13);
             this.label1.TabIndex = 2;
             this.label1.Text = "Create a new Worldsmith World project.";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // browseDirectoryButton
             // 
             this.browseDirectoryButton.Location = new System.Drawing.Point(291, 251);
             this.browseDirectoryButton.Name = "browseDirectoryButton";
             this.browseDirectoryButton.Size = new System.Drawing.Size(75, 23);
-            this.browseDirectoryButton.TabIndex = 3;
+            this.browseDirectoryButton.TabIndex = 5;
             this.browseDirectoryButton.Text = "Browse";
             this.browseDirectoryButton.UseVisualStyleBackColor = true;
             this.browseDirectoryButton.Click += new System.EventHandler(this.browseDirectoryButton_Click);
@@ -96,7 +96,8 @@
             this.directoryText.Location = new System.Drawing.Point(103, 253);
             this.directoryText.Name = "directoryText";
             this.directoryText.Size = new System.Drawing.Size(181, 20);
-            this.directoryText.TabIndex = 5;
+            this.directoryText.TabIndex = 4;
+            this.directoryText.TabStop = false;
             // 
             // descriptionLabel
             // 
@@ -113,7 +114,7 @@
             this.descriptionText.Multiline = true;
             this.descriptionText.Name = "descriptionText";
             this.descriptionText.Size = new System.Drawing.Size(351, 134);
-            this.descriptionText.TabIndex = 7;
+            this.descriptionText.TabIndex = 3;
             // 
             // customMapNameCheckBox
             // 

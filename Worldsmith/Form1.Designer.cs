@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newWorldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,7 +45,10 @@
             this.mapTabControl = new System.Windows.Forms.TabControl();
             this.openImageDialogue = new System.Windows.Forms.OpenFileDialog();
             this.projectFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.mapContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.createLandmarkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenuStrip.SuspendLayout();
+            this.mapContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenuStrip
@@ -93,7 +97,7 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(135, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(178, 6);
             // 
             // saveAllToolStripMenuItem
             // 
@@ -106,12 +110,12 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(135, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(178, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // editToolStripMenuItem
@@ -164,6 +168,21 @@
             // 
             this.projectFolderBrowserDialog.Description = "Select the root folder of the Worldsmith project.";
             // 
+            // mapContextMenuStrip
+            // 
+            this.mapContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createLandmarkToolStripMenuItem});
+            this.mapContextMenuStrip.Name = "mapContextMenuStrip";
+            this.mapContextMenuStrip.Size = new System.Drawing.Size(165, 48);
+            this.mapContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.mapContextMenuStrip_Opening);
+            // 
+            // createLandmarkToolStripMenuItem
+            // 
+            this.createLandmarkToolStripMenuItem.Name = "createLandmarkToolStripMenuItem";
+            this.createLandmarkToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.createLandmarkToolStripMenuItem.Text = "Create Landmark";
+            this.createLandmarkToolStripMenuItem.Click += new System.EventHandler(this.createLandmarkToolStripMenuItem_Click);
+            // 
             // ApplicationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -176,6 +195,7 @@
             this.Text = "Worldsmith";
             this.mainMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.PerformLayout();
+            this.mapContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -199,6 +219,8 @@
         private System.Windows.Forms.OpenFileDialog openImageDialogue;
         private System.Windows.Forms.ToolStripMenuItem openWorldToolStripMenuItem;
         private System.Windows.Forms.FolderBrowserDialog projectFolderBrowserDialog;
+        private System.Windows.Forms.ContextMenuStrip mapContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem createLandmarkToolStripMenuItem;
     }
 }
 
