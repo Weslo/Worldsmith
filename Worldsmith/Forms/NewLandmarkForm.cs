@@ -1,6 +1,6 @@
 ﻿#region File Description
 /*
- * NewWorldForm.cs
+ * NewLandmarkForm.cs
  * This class handles functionality for the New Landmark creation form.
  * 
  * Wes Rockholz
@@ -22,12 +22,13 @@ using System.Windows.Forms;
 
 namespace Worldsmith
 {
-    public partial class CreateLandmarkForm : Form
+    public partial class nm : Form
     {
 
         #region Collected Information
 
         public string LandmarkName { get; private set; }
+        public Color LandmarkColor { get; private set; }
         public bool Valid { get; private set; }
 
         #endregion Collected Information
@@ -41,7 +42,7 @@ namespace Worldsmith
         /// <summary>
         /// Base constructor.
         /// </summary>
-        public CreateLandmarkForm(Map map)
+        public nm(Map map)
         {
             InitializeComponent();
 
@@ -66,6 +67,9 @@ namespace Worldsmith
 
             // Flag valid as false until we finish.
             Valid = false;
+
+            // Cache information.
+            LandmarkName = nameText.Text;
 
             // Check for empty fields.
             if (LandmarkName == "")
@@ -97,6 +101,13 @@ namespace Worldsmith
         private void ClearHighlights()
         {
             nameText.BackColor = Color.White;
+        }
+
+        private void landmarkColorButton_Click(object sender, EventArgs e)
+        {
+            landmarkColorDialog.ShowDialog();
+            LandmarkColor = landmarkColorDialog.Color;
+            landmarkColorButton.BackColor = LandmarkColor;
         }
     }
 }

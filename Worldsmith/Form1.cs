@@ -18,6 +18,8 @@ namespace Worldsmith
 {
     public partial class ApplicationForm : Form
     {
+        public static ApplicationForm Singleton { get; private set; }
+
         private string projectRoot;
 
         private string ResourcesDirectory { get { return projectRoot + "\\Resources\\"; } }
@@ -31,11 +33,19 @@ namespace Worldsmith
         private Point prevMousePos = Point.Empty;
         private Point cachedMousePos = Point.Empty;
 
+        private string formTitle;
+
         #region Forms Initialization
 
+        /// <summary>
+        /// Base constructor.
+        /// </summary>
         public ApplicationForm()
         {
             InitializeComponent();
+
+            Singleton = this;
+            Initialize();
         }
 
         private void newWorldToolStripMenuItem_Click(object sender, EventArgs e)
@@ -48,29 +58,7 @@ namespace Worldsmith
 
         private void openWorldToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                // Browse for project directory.
-                projectFolderBrowserDialog.ShowDialog();
-                AssignProjectFolder(projectFolderBrowserDialog.SelectedPath);
-
-                if (projectRoot == null) return;
-
-                StreamReader reader = new StreamReader(projectRoot + "/" + "Test World" + ".json");
-                string input = reader.ReadToEnd();
-                reader.Close();
-                reader.Dispose();
-
-                World = JsonConvert.DeserializeObject<World>(input);
-
-                mapTabControl.TabPages.Clear();
-                openMaps.Clear();
-                OpenMapInNewTab(World.Maps[World.WorldMapName]);
-            }
-            catch
-            {
-                MessageBox.Show("Error loading World. Exited process early.");
-            }
+            FindProject();
         }
 
         private void saveAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -158,7 +146,15 @@ namespace Worldsmith
 
         private void mapContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
-            cachedMousePos = Cursor.Position;
+            // Retrieve the ContextMenuStrip that owns this ToolStripItem
+            ContextMenuStrip owner = sender as ContextMenuStrip;
+            if (owner != null)
+            {
+                // Get the control that is displaying this context menu
+                Control sourceControl = owner.SourceControl;
+                cachedMousePos = sourceControl.PointToClient(Cursor.Position);
+                Debug.Write(cachedMousePos);
+            }
         }
 
         private void createLandmarkToolStripMenuItem_Click(object sender, EventArgs e)
@@ -175,31 +171,54 @@ namespace Worldsmith
                 {
                     // Get the control that is displaying this context menu
                     Control sourceControl = owner.SourceControl;
-                    Point controlPoint = sourceControl.PointToClient(cachedMousePos);
-                    CreateLandmarkForm form = new CreateLandmarkForm(CurrentOpenMap);
+                    Point controlPoint = cachedMousePos;
+                    nm form = new nm(CurrentOpenMap);
                     form.ShowDialog();
                     if (form.Valid)
                     {
                         Landmark landmark = CreateNewLandmark(form);
-                        ConstructLandmarkButton(landmark, sourceControl, landmark.Position);
+                        ConstructLandmarkButton(landmark, sourceControl, cachedMousePos);
+                        InspectLandmark(landmark);
                     }
                 }
             }
             cachedMousePos = Point.Empty;
         }
 
+        private void landmarkBtnClicked(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            Landmark landmark = CurrentOpenMap.Landmarks[btn.Tag.ToString()];
+            InspectLandmark(landmark);
+        }
+
+        private void landmarkFormClosed(object sender, FormClosedEventArgs e)
+        {
+            RefreshLandmarkButtons();
+            MarkUnsavedChanges();
+        }
+
         #endregion Forms Initialization
 
         #region Public Methods
 
-        public void OpenMapInNewTab(Map map)
+        /// <summary>
+        /// Initialize this form.
+        /// </summary>
+        public void Initialize()
         {
-            TabPage newMapPage = new TabPage(map.Name);
-            mapTabControl.TabPages.Add(newMapPage);
-            openMaps.Add(map);
-            SetActiveMapImage(mapTabControl.SelectedTab, CurrentOpenMap, "Main");
+            formTitle = Text;
+            if (World == null)
+            {
+                //FindProject();
+            }
         }
 
+        /// <summary>
+        /// Creates a new World from form input.
+        /// </summary>
+        /// <param name="form">Form containing input that describes the new World.</param>
+        /// <returns>Reference to the new World object.</returns>
         public World CreateNewWorld(NewWorldForm form)
         {
             // Make sure the form is valid before proceeding.
@@ -236,7 +255,12 @@ namespace Worldsmith
             return null;
         }
 
-        public Landmark CreateNewLandmark(CreateLandmarkForm form)
+        /// <summary>
+        /// Creates a new Landmark from form input.
+        /// </summary>
+        /// <param name="form">Form containing input that describes the new Landmark.</param>
+        /// <returns>Reference to the new Landmark object.</returns>
+        public Landmark CreateNewLandmark(nm form)
         {
             // Make sure the form is valid before proceeding.
             if (form.Valid)
@@ -245,10 +269,12 @@ namespace Worldsmith
                 // TODO: Check for unsaved changes and prompt a save.
 
                 // Instantiate new landmark.
-                Landmark landmark = new Landmark(form.Name, cachedMousePos);
+                Landmark landmark = new Landmark(form.LandmarkName, cachedMousePos);
+                landmark.Color = form.LandmarkColor;
 
                 // Apply changes to map.
                 CurrentOpenMap.AddLandmark(landmark);
+                MarkUnsavedChanges();
 
                 // Return reference to the new landmark.
                 return landmark;
@@ -257,7 +283,41 @@ namespace Worldsmith
             // Failure, return null.
             return null;
         }
+        
+        /// <summary>
+        /// Prompts the user to open a Worldsmith project.
+        /// </summary>
+        public void FindProject()
+        {
+            try
+            {
+                // Browse for project directory.
+                projectFolderBrowserDialog.ShowDialog();
+                AssignProjectFolder(projectFolderBrowserDialog.SelectedPath);
 
+                if (projectRoot == null) return;
+
+                StreamReader reader = new StreamReader(projectRoot + "/" + "Test World" + ".json");
+                string input = reader.ReadToEnd();
+                reader.Close();
+                reader.Dispose();
+
+                World = JsonConvert.DeserializeObject<World>(input);
+
+                mapTabControl.TabPages.Clear();
+                openMaps.Clear();
+                OpenMapInNewTab(World.Maps[World.WorldMapName]);
+            }
+            catch
+            {
+                MessageBox.Show("Error loading World. Exited process early.");
+            }
+        }
+
+        /// <summary>
+        /// Assigns the current project directory.
+        /// </summary>
+        /// <param name="filepath">Filepath to the assigned project directory.</param>
         public void AssignProjectFolder(string filepath)
         {
             if (filepath == null || filepath.Length == 0)
@@ -269,7 +329,10 @@ namespace Worldsmith
                 projectRoot = filepath;
             }
         }
-
+      
+        /// <summary>
+        /// Saves the currently assigned World to the currently assigned project directory.
+        /// </summary>
         public void SaveWorld()
         {
             if (projectRoot == null)
@@ -280,7 +343,7 @@ namespace Worldsmith
             if (World == null)
             {
                 // TODO: Handle issue that world does not exist.
-                throw new Exception("World does not exist.");
+                MessageBox.Show("World does not exist. Cannot save.");
             }
             // Success!
             else
@@ -296,9 +359,42 @@ namespace Worldsmith
                 {
                     Directory.CreateDirectory(ResourcesDirectory);
                 }
+                
+                // Clear unsaved change marker.
+                ClearUnsavedChangesMark();
             }
         }
 
+        /// <summary>
+        /// Inspects the given landmark.
+        /// </summary>
+        /// <param name="landmark">Landmark to inspect.</param>
+        public void InspectLandmark(Landmark landmark)
+        {
+            InspectLandmarkForm form = new InspectLandmarkForm(CurrentOpenMap, landmark);
+            form.FormClosed += landmarkFormClosed;
+            form.ShowDialog();
+        }
+
+        /// <summary>
+        /// Opens a map in a new tab in the Map Tab Control.
+        /// </summary>
+        /// <param name="map">Reference to the Map the client is opening.</param>
+        public void OpenMapInNewTab(Map map)
+        {
+            TabPage newMapPage = new TabPage(map.Name);
+            mapTabControl.TabPages.Add(newMapPage);
+            mapTabControl.SelectedTab = newMapPage;
+            openMaps.Add(map);
+            SetActiveMapImage(mapTabControl.SelectedTab, CurrentOpenMap, "Main");
+        }
+        
+        /// <summary>
+        /// Sets the image displayed on the currently active map.
+        /// </summary>
+        /// <param name="tab">Tab the map is open in.</param>
+        /// <param name="map">Map the image is displayed against.</param>
+        /// <param name="imageKey">Key referring to the relevant image.</param>
         public void SetActiveMapImage(TabPage tab, Map map, string imageKey)
         {
             tab.Controls.Clear();
@@ -314,12 +410,15 @@ namespace Worldsmith
                 tabPictureBox.MouseMove += tabPictureBox_MouseMove;
             }
 
-            foreach (Landmark l in map.Landmarks.Values)
-            {
-                ConstructLandmarkButton(l, tabPictureBox, l.Position);
-            }
+            RefreshLandmarkButtons();
         }
 
+        /// <summary>
+        /// Constructs a new button for a landmark on the currently selected map tab.
+        /// </summary>
+        /// <param name="landmark">Reference to the landmark the button refers to.</param>
+        /// <param name="container">Container the button is created in.</param>
+        /// <param name="position">Position of the button.</param>
         public void ConstructLandmarkButton(Landmark landmark, Control container, Point position)
         {
             Button btn = new Button();
@@ -328,7 +427,39 @@ namespace Worldsmith
             btn.Tag = landmark.Name;
             btn.Width = 30;
             btn.Height = 30;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.BackColor = landmark.Color;
             btn.Location = new Point(position.X - btn.Width / 2, position.Y - btn.Height / 2);
+            btn.Click += landmarkBtnClicked;
+        }
+
+        /// <summary>
+        /// Refreshes all the Landmark buttons on the current open Map tab.
+        /// </summary>
+        public void RefreshLandmarkButtons()
+        {
+            PictureBox tabPictureBox = mapTabControl.SelectedTab.Controls[0] as PictureBox;
+            tabPictureBox.Controls.Clear();
+            foreach (Landmark l in CurrentOpenMap.Landmarks.Values)
+            {
+                ConstructLandmarkButton(l, tabPictureBox, l.Position);
+            }
+        }
+        
+        /// <summary>
+        /// Mark this form as having unsaved changes.
+        /// </summary>
+        public void MarkUnsavedChanges()
+        {
+            Text = formTitle + "*";
+        }
+
+        /// <summary>
+        /// Clears unsaved changes marks.
+        /// </summary>
+        public void ClearUnsavedChangesMark()
+        {
+            Text = formTitle;
         }
 
         #endregion Public Methods

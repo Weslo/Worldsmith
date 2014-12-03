@@ -56,11 +56,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\CreateLandmarkForm.cs">
+    <Compile Include="Forms\InspectLandmarkForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\CreateLandmarkForm.Designer.cs">
-      <DependentUpon>CreateLandmarkForm.cs</DependentUpon>
+    <Compile Include="Forms\InspectLandmarkForm.Designer.cs">
+      <DependentUpon>InspectLandmarkForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NewLandmarkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewLandmarkForm.Designer.cs">
+      <DependentUpon>NewLandmarkForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -82,8 +88,11 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\CreateLandmarkForm.resx">
-      <DependentUpon>CreateLandmarkForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\InspectLandmarkForm.resx">
+      <DependentUpon>InspectLandmarkForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewLandmarkForm.resx">
+      <DependentUpon>NewLandmarkForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\NewWorldForm.resx">
       <DependentUpon>NewWorldForm.cs</DependentUpon>
