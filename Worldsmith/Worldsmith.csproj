@@ -80,6 +80,18 @@
     <Compile Include="Forms\NewWorldForm.Designer.cs">
       <DependentUpon>NewWorldForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\InspectWorldForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InspectWorldForm.Designer.cs">
+      <DependentUpon>InspectWorldForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InspectMapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InspectMapForm.Designer.cs">
+      <DependentUpon>InspectMapForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="World Components\Landmark.cs" />
     <Compile Include="World Components\Map.cs" />
     <Compile Include="Program.cs" />
@@ -90,6 +102,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InspectLandmarkForm.resx">
       <DependentUpon>InspectLandmarkForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InspectMapForm.resx">
+      <DependentUpon>InspectMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InspectWorldForm.resx">
+      <DependentUpon>InspectWorldForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\NewLandmarkForm.resx">
       <DependentUpon>NewLandmarkForm.cs</DependentUpon>

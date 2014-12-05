@@ -22,13 +22,17 @@ namespace Worldsmith
 
         private string projectRoot;
 
-        private string ResourcesDirectory { get { return projectRoot + "\\Resources\\"; } }
+        public string ResourcesDirectory { get { return projectRoot + "\\Resources\\"; } }
 
         public World World { get; set; }
 
         private List<Map> openMaps = new List<Map>();
 
-        private Map CurrentOpenMap { get { return openMaps[mapTabControl.SelectedIndex]; } }
+        private Map CurrentOpenMap { get
+        { 
+            if (openMaps.Count < 1) return null;
+            return openMaps[mapTabControl.SelectedIndex]; 
+        } }
 
         private Point prevMousePos = Point.Empty;
         private Point cachedMousePos = Point.Empty;
@@ -66,18 +70,42 @@ namespace Worldsmith
             SaveWorld();
         }
 
+        /// <summary>
+        /// Fires when the World->About toolstrip menu item is clicked.
+        /// </summary>
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InspectWorld(World);
+        }
+
+        /// <summary>
+        /// Fires when the Map->About button is clicked.
+        /// </summary>
+        private void aboutMapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InspectMap(CurrentOpenMap);
+        }
+
         private void addImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openImageDialogue.ShowDialog();
+            openImageDialog.ShowDialog();
         }
 
         private void openImageDialogue_FileOk(object sender, CancelEventArgs e)
         {
-            string path = openImageDialogue.FileName;
+            string path = openImageDialog.FileName;
             string saveName = ResourcesDirectory + "TestImage.jpg";
             File.Copy(path, saveName, true);
             CurrentOpenMap.AddImage("Main", "TestImage.jpg");
             SetActiveMapImage(mapTabControl.SelectedTab, CurrentOpenMap, "Main");
+        }
+
+        /// <summary>
+        /// Fires when the Map->Close button is clicked.
+        /// </summary>
+        private void closeMapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CloseCurrentMap();
         }
 
         private void tabPictureBox_MouseMove(object sender, MouseEventArgs e)
@@ -153,7 +181,6 @@ namespace Worldsmith
                 // Get the control that is displaying this context menu
                 Control sourceControl = owner.SourceControl;
                 cachedMousePos = sourceControl.PointToClient(Cursor.Position);
-                Debug.Write(cachedMousePos);
             }
         }
 
@@ -229,8 +256,8 @@ namespace Worldsmith
 
                 // Instantiate new world.
                 World = new World(form.WorldName);
+                RefreshWorldButtons();
                 World.Description = form.WorldDescription;
-                World.WorldMapName = form.WorldMapName;
                 AssignProjectFolder(form.WorldDirectory);
 
                 // Clear map controls.
@@ -238,8 +265,8 @@ namespace Worldsmith
                 openMaps.Clear();
 
                 // Create the world map for the user.
-                Map worldMap = new Map(World.WorldMapName);
-                World.AddMap(worldMap);
+                Map worldMap = new Map(form.WorldMapName);
+                World.WorldMap = worldMap;
 
                 // Open the world map in the tab control.
                 OpenMapInNewTab(worldMap);
@@ -291,22 +318,25 @@ namespace Worldsmith
         {
             try
             {
-                // Browse for project directory.
-                projectFolderBrowserDialog.ShowDialog();
-                AssignProjectFolder(projectFolderBrowserDialog.SelectedPath);
+                // Browse for project file.
+                projectFileBrowserDialog.ShowDialog();
+                string file = projectFileBrowserDialog.FileName;
+                string directory = Path.GetDirectoryName(file);
+                AssignProjectFolder(directory);
 
                 if (projectRoot == null) return;
 
-                StreamReader reader = new StreamReader(projectRoot + "/" + "Test World" + ".json");
+                StreamReader reader = new StreamReader(file);
                 string input = reader.ReadToEnd();
                 reader.Close();
                 reader.Dispose();
 
                 World = JsonConvert.DeserializeObject<World>(input);
+                RefreshWorldButtons();
 
                 mapTabControl.TabPages.Clear();
                 openMaps.Clear();
-                OpenMapInNewTab(World.Maps[World.WorldMapName]);
+                OpenMapInNewTab(World.WorldMap);
             }
             catch
             {
@@ -349,7 +379,7 @@ namespace Worldsmith
             else
             {
                 string output = World.ToString();
-                StreamWriter writer = new StreamWriter(projectRoot + "\\" + World.Name + ".json");
+                StreamWriter writer = new StreamWriter(projectRoot + "\\" + World.Name + ".ws");
                 writer.Write(output);
                 writer.Close();
                 writer.Dispose();
@@ -371,8 +401,32 @@ namespace Worldsmith
         /// <param name="landmark">Landmark to inspect.</param>
         public void InspectLandmark(Landmark landmark)
         {
+            if (landmark == null) return;
             InspectLandmarkForm form = new InspectLandmarkForm(CurrentOpenMap, landmark);
             form.FormClosed += landmarkFormClosed;
+            form.ShowDialog();
+        }
+
+        /// <summary>
+        /// Inspects the given map.
+        /// </summary>
+        /// <param name="map">Map to inspect.</param>
+        public void InspectMap(Map map)
+        {
+            if (map == null) return;
+            InspectMapForm form = new InspectMapForm(CurrentOpenMap);
+            form.FormClosed += landmarkFormClosed;
+            form.ShowDialog();
+        }
+
+        /// <summary>
+        /// Inspects the given world.
+        /// </summary>
+        /// <param name="world">World to inspect.</param>
+        public void InspectWorld(World world)
+        {
+            if (world == null) return;
+            InspectWorldForm form = new InspectWorldForm(World);
             form.ShowDialog();
         }
 
@@ -387,6 +441,17 @@ namespace Worldsmith
             mapTabControl.SelectedTab = newMapPage;
             openMaps.Add(map);
             SetActiveMapImage(mapTabControl.SelectedTab, CurrentOpenMap, "Main");
+            RefreshMapButtons();
+        }
+
+        /// <summary>
+        /// Closes the currently open map.
+        /// </summary>
+        public void CloseCurrentMap()
+        {
+            openMaps.Remove(CurrentOpenMap);
+            mapTabControl.TabPages.Remove(mapTabControl.SelectedTab);
+            RefreshMapButtons();
         }
         
         /// <summary>
@@ -425,6 +490,7 @@ namespace Worldsmith
             container.Controls.Add(btn);
             btn.Name = "btn" + landmark.Name;
             btn.Tag = landmark.Name;
+            Debug.WriteLine(btn.Tag);
             btn.Width = 30;
             btn.Height = 30;
             btn.FlatStyle = FlatStyle.Flat;
@@ -460,6 +526,40 @@ namespace Worldsmith
         public void ClearUnsavedChangesMark()
         {
             Text = formTitle;
+        }
+
+        /// <summary>
+        /// Refreshes buttons that only work when a world exists.
+        /// </summary>
+        public void RefreshWorldButtons()
+        {
+            if (World != null)
+            {
+                aboutToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                aboutToolStripMenuItem.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Refreshes buttons that only work when a map exists.
+        /// </summary>
+        public void RefreshMapButtons()
+        {
+            if (CurrentOpenMap != null)
+            {
+                aboutMapToolStripMenuItem.Enabled = true;
+                addImageToolStripMenuItem.Enabled = true;
+                closeMapToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                aboutMapToolStripMenuItem.Enabled = false;
+                addImageToolStripMenuItem.Enabled = false;
+                closeMapToolStripMenuItem.Enabled = false;
+            }
         }
 
         #endregion Public Methods

@@ -26,6 +26,8 @@ namespace Worldsmith
     {
         #region Fields
 
+        public bool Valid { get; set; }
+
         private Map map;
         private Landmark landmark;
 
@@ -49,7 +51,7 @@ namespace Worldsmith
         {
             this.map = map;
             this.landmark = landmark;
-
+            
             Text = this.landmark.Name;
             nameText.Text = this.landmark.Name;
             colorButton.BackColor = this.landmark.Color;
@@ -59,13 +61,16 @@ namespace Worldsmith
             {
                 mapCheckBox.Checked = true;
             }
+
+            Valid = true;
         }
 
         /// <summary>
         /// Validate the input on this form.
         /// </summary>
-        public bool Validate()
+        public bool ValidateForm()
         {
+            Valid = false;
             ClearHighlights();
 
             // Check for empty fields.
@@ -88,6 +93,7 @@ namespace Worldsmith
                 }
             }
 
+            Valid = true;
             return true;
         }
 
@@ -96,13 +102,18 @@ namespace Worldsmith
         /// </summary>
         public void ApplyChanges()
         {
-            landmark.Name = nameText.Text;
-            Text = landmark.Name;
-            landmark.Description = descriptionText.Text;
-
-            if (!mapCheckBox.Checked)
+            if (ValidateForm())
             {
-                landmark.InternalMap = null;
+                map.Landmarks.Remove(landmark.Name);
+                landmark.Name = nameText.Text;
+                map.AddLandmark(landmark);
+                Text = landmark.Name;
+                landmark.Description = descriptionText.Text;
+
+                if (!mapCheckBox.Checked)
+                {
+                    landmark.InternalMap = null;
+                }
             }
         }
 
@@ -120,12 +131,9 @@ namespace Worldsmith
         /// </summary>
         private void applyButton_Click(object sender, EventArgs e)
         {
-            if (Validate())
-            {
-                ApplyChanges();
+            ApplyChanges();
 
-                Close();
-            }
+            if (Valid) { Close(); }
         }
 
         /// <summary>
@@ -143,7 +151,7 @@ namespace Worldsmith
         /// <param name="e"></param>
         private void openMapButton_Click(object sender, EventArgs e)
         {
-            if (Validate())
+            if (ValidateForm())
             {
                 ApplyChanges();
                 if (landmark.InternalMap == null) landmark.InternalMap = new Map(landmark.Name);

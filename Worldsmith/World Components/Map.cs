@@ -9,6 +9,7 @@ namespace Worldsmith
     public class Map
     {
         public string Name { get; set; }
+        public string Description { get; set; }
         public Dictionary<string, Landmark> Landmarks;
         public Dictionary<string, string> Images;
 
