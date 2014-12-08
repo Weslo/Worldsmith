@@ -17,6 +17,8 @@ namespace Worldsmith
         //public string WorldMapName { get; set; }
         //public Dictionary<string, Map> Maps { get; set; }
 
+        public List<Race> Races { get; set; }
+
         /// <summary>
         /// Base constructor.
         /// </summary>
@@ -25,6 +27,8 @@ namespace Worldsmith
         {
             Name = name;
             //Maps = new Dictionary<string, Map>();
+
+            Races = new List<Race>();
         }
 
         /*

@@ -37,6 +37,7 @@
             this.mapCheckBox = new System.Windows.Forms.CheckBox();
             this.openMapButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
+            this.landmarkColorDialog = new System.Windows.Forms.ColorDialog();
             this.SuspendLayout();
             // 
             // deleteButton
@@ -61,6 +62,7 @@
             this.colorButton.Size = new System.Drawing.Size(30, 30);
             this.colorButton.TabIndex = 1;
             this.colorButton.UseVisualStyleBackColor = false;
+            this.colorButton.Click += new System.EventHandler(this.colorButton_Click);
             // 
             // applyButton
             // 
@@ -173,5 +175,6 @@
         private System.Windows.Forms.CheckBox mapCheckBox;
         private System.Windows.Forms.Button openMapButton;
         private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.ColorDialog landmarkColorDialog;
     }
 }

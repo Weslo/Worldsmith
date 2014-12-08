@@ -109,6 +109,7 @@ namespace Worldsmith
                 map.AddLandmark(landmark);
                 Text = landmark.Name;
                 landmark.Description = descriptionText.Text;
+                landmark.Color = colorButton.BackColor;
 
                 if (!mapCheckBox.Checked)
                 {
@@ -147,8 +148,6 @@ namespace Worldsmith
         /// <summary>
         /// Fires when the open map button is clicked.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void openMapButton_Click(object sender, EventArgs e)
         {
             if (ValidateForm())
@@ -159,8 +158,16 @@ namespace Worldsmith
                 Close();
             }
         }
-        
 
+        /// <summary>
+        /// Fires when the color button is clicked.
+        /// </summary>
+        private void colorButton_Click(object sender, EventArgs e)
+        {
+            landmarkColorDialog.ShowDialog();
+            colorButton.BackColor = landmarkColorDialog.Color;
+        }
+        
         /// <summary>
         /// Clears highlights on fields.
         /// </summary>

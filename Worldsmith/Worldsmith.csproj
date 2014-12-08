@@ -56,6 +56,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlignmentsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlignmentsForm.Designer.cs">
+      <DependentUpon>AlignmentsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\InspectLandmarkForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,11 +98,15 @@
     <Compile Include="Forms\InspectMapForm.Designer.cs">
       <DependentUpon>InspectMapForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="World Components\Race.cs" />
     <Compile Include="World Components\Landmark.cs" />
     <Compile Include="World Components\Map.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="World Components\World.cs" />
+    <EmbeddedResource Include="AlignmentsForm.resx">
+      <DependentUpon>AlignmentsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

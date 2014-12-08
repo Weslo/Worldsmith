@@ -86,6 +86,15 @@ namespace Worldsmith
             InspectMap(CurrentOpenMap);
         }
 
+        /// <summary>
+        /// Fires when the Map->Alignments button is clicked.
+        /// </summary>
+        private void alignmentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AlignmentsForm form = new AlignmentsForm(World);
+            form.ShowDialog();
+        }
+
         private void addImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openImageDialog.ShowDialog();
@@ -94,9 +103,9 @@ namespace Worldsmith
         private void openImageDialogue_FileOk(object sender, CancelEventArgs e)
         {
             string path = openImageDialog.FileName;
-            string saveName = ResourcesDirectory + "TestImage.jpg";
+            string saveName = ResourcesDirectory + CurrentOpenMap.Name + ".jpg";
             File.Copy(path, saveName, true);
-            CurrentOpenMap.AddImage("Main", "TestImage.jpg");
+            CurrentOpenMap.AddImage("Main", CurrentOpenMap.Name + ".jpg");
             SetActiveMapImage(mapTabControl.SelectedTab, CurrentOpenMap, "Main");
         }
 
@@ -536,10 +545,12 @@ namespace Worldsmith
             if (World != null)
             {
                 aboutToolStripMenuItem.Enabled = true;
+                alignmentsToolStripMenuItem.Enabled = true;
             }
             else
             {
                 aboutToolStripMenuItem.Enabled = false;
+                alignmentsToolStripMenuItem.Enabled = false;
             }
         }
 

@@ -57,6 +57,13 @@ namespace Worldsmith
             }
         }
 
+        private void landmarkColorButton_Click(object sender, EventArgs e)
+        {
+            landmarkColorDialog.ShowDialog();
+            LandmarkColor = landmarkColorDialog.Color;
+            landmarkColorButton.BackColor = LandmarkColor;
+        }
+
         /// <summary>
         /// Validate the input in fields in this form.
         /// </summary>
@@ -101,13 +108,6 @@ namespace Worldsmith
         private void ClearHighlights()
         {
             nameText.BackColor = Color.White;
-        }
-
-        private void landmarkColorButton_Click(object sender, EventArgs e)
-        {
-            landmarkColorDialog.ShowDialog();
-            LandmarkColor = landmarkColorDialog.Color;
-            landmarkColorButton.BackColor = LandmarkColor;
         }
     }
 }

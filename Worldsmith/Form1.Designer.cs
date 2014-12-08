@@ -42,16 +42,17 @@
             this.mapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.closeMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapTabControl = new System.Windows.Forms.TabControl();
             this.openImageDialog = new System.Windows.Forms.OpenFileDialog();
             this.projectFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.mapContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.createLandmarkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectFileBrowserDialog = new System.Windows.Forms.OpenFileDialog();
-            this.closeMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.aboutMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.alignmentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenuStrip.SuspendLayout();
             this.mapContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -138,7 +139,8 @@
             // mapToolStripMenuItem
             // 
             this.mapToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.alignmentsToolStripMenuItem});
             this.mapToolStripMenuItem.Name = "mapToolStripMenuItem";
             this.mapToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.mapToolStripMenuItem.Text = "World";
@@ -162,13 +164,34 @@
             this.wToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.wToolStripMenuItem.Text = "Map";
             // 
+            // aboutMapToolStripMenuItem
+            // 
+            this.aboutMapToolStripMenuItem.Enabled = false;
+            this.aboutMapToolStripMenuItem.Name = "aboutMapToolStripMenuItem";
+            this.aboutMapToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.aboutMapToolStripMenuItem.Text = "About...";
+            this.aboutMapToolStripMenuItem.Click += new System.EventHandler(this.aboutMapToolStripMenuItem_Click);
+            // 
             // addImageToolStripMenuItem
             // 
             this.addImageToolStripMenuItem.Enabled = false;
             this.addImageToolStripMenuItem.Name = "addImageToolStripMenuItem";
-            this.addImageToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addImageToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.addImageToolStripMenuItem.Text = "Add Image...";
             this.addImageToolStripMenuItem.Click += new System.EventHandler(this.addImageToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(138, 6);
+            // 
+            // closeMapToolStripMenuItem
+            // 
+            this.closeMapToolStripMenuItem.Enabled = false;
+            this.closeMapToolStripMenuItem.Name = "closeMapToolStripMenuItem";
+            this.closeMapToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.closeMapToolStripMenuItem.Text = "Close";
+            this.closeMapToolStripMenuItem.Click += new System.EventHandler(this.closeMapToolStripMenuItem_Click);
             // 
             // mapTabControl
             // 
@@ -206,26 +229,13 @@
             // 
             this.projectFileBrowserDialog.Filter = "Worldsmith Files (.ws)|*.ws";
             // 
-            // closeMapToolStripMenuItem
+            // alignmentsToolStripMenuItem
             // 
-            this.closeMapToolStripMenuItem.Enabled = false;
-            this.closeMapToolStripMenuItem.Name = "closeMapToolStripMenuItem";
-            this.closeMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.closeMapToolStripMenuItem.Text = "Close";
-            this.closeMapToolStripMenuItem.Click += new System.EventHandler(this.closeMapToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
-            // 
-            // aboutMapToolStripMenuItem
-            // 
-            this.aboutMapToolStripMenuItem.Enabled = false;
-            this.aboutMapToolStripMenuItem.Name = "aboutMapToolStripMenuItem";
-            this.aboutMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.aboutMapToolStripMenuItem.Text = "About...";
-            this.aboutMapToolStripMenuItem.Click += new System.EventHandler(this.aboutMapToolStripMenuItem_Click);
+            this.alignmentsToolStripMenuItem.Enabled = false;
+            this.alignmentsToolStripMenuItem.Name = "alignmentsToolStripMenuItem";
+            this.alignmentsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.alignmentsToolStripMenuItem.Text = "Alignments...";
+            this.alignmentsToolStripMenuItem.Click += new System.EventHandler(this.alignmentsToolStripMenuItem_Click);
             // 
             // ApplicationForm
             // 
@@ -270,6 +280,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem closeMapToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutMapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem alignmentsToolStripMenuItem;
     }
 }
 
