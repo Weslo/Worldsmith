@@ -62,6 +62,7 @@
     <Compile Include="AlignmentsForm.Designer.cs">
       <DependentUpon>AlignmentsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="World Components\Faction.cs" />
     <Compile Include="Forms\InspectLandmarkForm.cs">
       <SubType>Form</SubType>
     </Compile>

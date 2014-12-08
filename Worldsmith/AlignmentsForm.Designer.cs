@@ -41,8 +41,18 @@
             this.factionsTabPage = new System.Windows.Forms.TabPage();
             this.closeButton = new System.Windows.Forms.Button();
             this.raceApplyButton = new System.Windows.Forms.Button();
+            this.factionApplyButton = new System.Windows.Forms.Button();
+            this.factionDescriptionText = new System.Windows.Forms.TextBox();
+            this.factionDescriptionLabel = new System.Windows.Forms.Label();
+            this.factionNameText = new System.Windows.Forms.TextBox();
+            this.factionNameLabel = new System.Windows.Forms.Label();
+            this.factionsLabel = new System.Windows.Forms.Label();
+            this.addFactionButton = new System.Windows.Forms.Button();
+            this.removeFactionButton = new System.Windows.Forms.Button();
+            this.factionsListBox = new System.Windows.Forms.ListBox();
             this.alignmentTabControl.SuspendLayout();
             this.racesTabControl.SuspendLayout();
+            this.factionsTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // alignmentTabControl
@@ -126,6 +136,7 @@
             // 
             // addRaceButton
             // 
+            this.addRaceButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.addRaceButton.Location = new System.Drawing.Point(75, 302);
             this.addRaceButton.Name = "addRaceButton";
             this.addRaceButton.Size = new System.Drawing.Size(50, 50);
@@ -136,6 +147,7 @@
             // 
             // removeRaceButton
             // 
+            this.removeRaceButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.removeRaceButton.Location = new System.Drawing.Point(11, 302);
             this.removeRaceButton.Name = "removeRaceButton";
             this.removeRaceButton.Size = new System.Drawing.Size(50, 50);
@@ -155,6 +167,15 @@
             // 
             // factionsTabPage
             // 
+            this.factionsTabPage.Controls.Add(this.factionApplyButton);
+            this.factionsTabPage.Controls.Add(this.factionDescriptionText);
+            this.factionsTabPage.Controls.Add(this.factionDescriptionLabel);
+            this.factionsTabPage.Controls.Add(this.factionNameText);
+            this.factionsTabPage.Controls.Add(this.factionNameLabel);
+            this.factionsTabPage.Controls.Add(this.factionsLabel);
+            this.factionsTabPage.Controls.Add(this.addFactionButton);
+            this.factionsTabPage.Controls.Add(this.removeFactionButton);
+            this.factionsTabPage.Controls.Add(this.factionsListBox);
             this.factionsTabPage.Location = new System.Drawing.Point(4, 22);
             this.factionsTabPage.Name = "factionsTabPage";
             this.factionsTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -182,6 +203,95 @@
             this.raceApplyButton.TabIndex = 10;
             this.raceApplyButton.Text = "Apply";
             this.raceApplyButton.UseVisualStyleBackColor = true;
+            this.raceApplyButton.Click += new System.EventHandler(this.raceApplyButton_Click);
+            // 
+            // factionApplyButton
+            // 
+            this.factionApplyButton.Location = new System.Drawing.Point(520, 331);
+            this.factionApplyButton.Name = "factionApplyButton";
+            this.factionApplyButton.Size = new System.Drawing.Size(75, 23);
+            this.factionApplyButton.TabIndex = 19;
+            this.factionApplyButton.Text = "Apply";
+            this.factionApplyButton.UseVisualStyleBackColor = true;
+            this.factionApplyButton.Click += new System.EventHandler(this.factionApplyButton_Click);
+            // 
+            // factionDescriptionText
+            // 
+            this.factionDescriptionText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.factionDescriptionText.Enabled = false;
+            this.factionDescriptionText.Location = new System.Drawing.Point(136, 76);
+            this.factionDescriptionText.Multiline = true;
+            this.factionDescriptionText.Name = "factionDescriptionText";
+            this.factionDescriptionText.Size = new System.Drawing.Size(455, 249);
+            this.factionDescriptionText.TabIndex = 18;
+            // 
+            // factionDescriptionLabel
+            // 
+            this.factionDescriptionLabel.AutoSize = true;
+            this.factionDescriptionLabel.Location = new System.Drawing.Point(133, 60);
+            this.factionDescriptionLabel.Name = "factionDescriptionLabel";
+            this.factionDescriptionLabel.Size = new System.Drawing.Size(60, 13);
+            this.factionDescriptionLabel.TabIndex = 17;
+            this.factionDescriptionLabel.Text = "Description";
+            // 
+            // factionNameText
+            // 
+            this.factionNameText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.factionNameText.Enabled = false;
+            this.factionNameText.Location = new System.Drawing.Point(136, 37);
+            this.factionNameText.Name = "factionNameText";
+            this.factionNameText.Size = new System.Drawing.Size(455, 20);
+            this.factionNameText.TabIndex = 16;
+            // 
+            // factionNameLabel
+            // 
+            this.factionNameLabel.AutoSize = true;
+            this.factionNameLabel.Location = new System.Drawing.Point(133, 21);
+            this.factionNameLabel.Name = "factionNameLabel";
+            this.factionNameLabel.Size = new System.Drawing.Size(35, 13);
+            this.factionNameLabel.TabIndex = 15;
+            this.factionNameLabel.Text = "Name";
+            // 
+            // factionsLabel
+            // 
+            this.factionsLabel.AutoSize = true;
+            this.factionsLabel.Location = new System.Drawing.Point(7, 5);
+            this.factionsLabel.Name = "factionsLabel";
+            this.factionsLabel.Size = new System.Drawing.Size(47, 13);
+            this.factionsLabel.TabIndex = 14;
+            this.factionsLabel.Text = "Factions";
+            // 
+            // addFactionButton
+            // 
+            this.addFactionButton.Location = new System.Drawing.Point(74, 304);
+            this.addFactionButton.Name = "addFactionButton";
+            this.addFactionButton.Size = new System.Drawing.Size(50, 50);
+            this.addFactionButton.TabIndex = 13;
+            this.addFactionButton.Text = "+";
+            this.addFactionButton.UseVisualStyleBackColor = true;
+            this.addFactionButton.Click += new System.EventHandler(this.addFactionButton_Click);
+            // 
+            // removeFactionButton
+            // 
+            this.removeFactionButton.Location = new System.Drawing.Point(10, 304);
+            this.removeFactionButton.Name = "removeFactionButton";
+            this.removeFactionButton.Size = new System.Drawing.Size(50, 50);
+            this.removeFactionButton.TabIndex = 12;
+            this.removeFactionButton.Text = "-";
+            this.removeFactionButton.UseVisualStyleBackColor = true;
+            this.removeFactionButton.Click += new System.EventHandler(this.removeFactionButton_Click);
+            // 
+            // factionsListBox
+            // 
+            this.factionsListBox.FormattingEnabled = true;
+            this.factionsListBox.Location = new System.Drawing.Point(7, 21);
+            this.factionsListBox.Name = "factionsListBox";
+            this.factionsListBox.Size = new System.Drawing.Size(120, 277);
+            this.factionsListBox.TabIndex = 11;
+            this.factionsListBox.SelectedIndexChanged += new System.EventHandler(this.factionsListBox_SelectedIndexChanged);
             // 
             // AlignmentsForm
             // 
@@ -199,6 +309,8 @@
             this.alignmentTabControl.ResumeLayout(false);
             this.racesTabControl.ResumeLayout(false);
             this.racesTabControl.PerformLayout();
+            this.factionsTabPage.ResumeLayout(false);
+            this.factionsTabPage.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -218,5 +330,14 @@
         private System.Windows.Forms.Label raceDescriptionLabel;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Button raceApplyButton;
+        private System.Windows.Forms.Button factionApplyButton;
+        private System.Windows.Forms.TextBox factionDescriptionText;
+        private System.Windows.Forms.Label factionDescriptionLabel;
+        private System.Windows.Forms.TextBox factionNameText;
+        private System.Windows.Forms.Label factionNameLabel;
+        private System.Windows.Forms.Label factionsLabel;
+        private System.Windows.Forms.Button addFactionButton;
+        private System.Windows.Forms.Button removeFactionButton;
+        private System.Windows.Forms.ListBox factionsListBox;
     }
 }

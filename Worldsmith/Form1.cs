@@ -100,6 +100,9 @@ namespace Worldsmith
             openImageDialog.ShowDialog();
         }
 
+        /// <summary>
+        /// Fires when the open image dialog form is accepted.
+        /// </summary>
         private void openImageDialogue_FileOk(object sender, CancelEventArgs e)
         {
             string path = openImageDialog.FileName;

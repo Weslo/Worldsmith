@@ -18,6 +18,7 @@ namespace Worldsmith
         //public Dictionary<string, Map> Maps { get; set; }
 
         public List<Race> Races { get; set; }
+        public List<Faction> Factions { get; set; }
 
         /// <summary>
         /// Base constructor.
@@ -29,6 +30,7 @@ namespace Worldsmith
             //Maps = new Dictionary<string, Map>();
 
             Races = new List<Race>();
+            Factions = new List<Faction>();
         }
 
         /*
