@@ -29,11 +29,14 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.MenuStrip formMenuStrip;
-            System.Windows.Forms.Label classRestrictionLabel;
-            System.Windows.Forms.Label actionCostLabel;
+            System.Windows.Forms.Label skillClassRestrictionLabel;
+            System.Windows.Forms.Label skillActionCostLabel;
             System.Windows.Forms.Label skillNameLabel;
-            System.Windows.Forms.Label energyCostLabel;
-            System.Windows.Forms.Label targetTypeLabel;
+            System.Windows.Forms.Label skillEnergyCostLabel;
+            System.Windows.Forms.Label skillTargetTypeLabel;
+            System.Windows.Forms.Label skillTargetOptionsLabel;
+            System.Windows.Forms.Label label1;
+            System.Windows.Forms.Label skillRangeLabel;
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,25 +47,32 @@
             this.openDataSourceDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormTabControl = new System.Windows.Forms.TabControl();
             this.skillsTabPage = new System.Windows.Forms.TabPage();
-            this.targetTypeComboBox = new System.Windows.Forms.ComboBox();
-            this.energyCostNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.x = new System.Windows.Forms.NumericUpDown();
+            this.skillRangeNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.skillRequiresLineOfSightCheckBox = new System.Windows.Forms.CheckBox();
+            this.skillTargetOptionsComboBox = new System.Windows.Forms.ComboBox();
+            this.skillTargetTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.skillEnergyCostNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.skillActionCostNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.skillClassRestrictionComboBox = new System.Windows.Forms.ComboBox();
             this.skillNameTextBox = new System.Windows.Forms.TextBox();
             this.newActionButton = new System.Windows.Forms.Button();
             this.skillsListBox = new System.Windows.Forms.ListBox();
             this.saveDataSourceDialog = new System.Windows.Forms.SaveFileDialog();
             formMenuStrip = new System.Windows.Forms.MenuStrip();
-            classRestrictionLabel = new System.Windows.Forms.Label();
-            actionCostLabel = new System.Windows.Forms.Label();
+            skillClassRestrictionLabel = new System.Windows.Forms.Label();
+            skillActionCostLabel = new System.Windows.Forms.Label();
             skillNameLabel = new System.Windows.Forms.Label();
-            energyCostLabel = new System.Windows.Forms.Label();
-            targetTypeLabel = new System.Windows.Forms.Label();
+            skillEnergyCostLabel = new System.Windows.Forms.Label();
+            skillTargetTypeLabel = new System.Windows.Forms.Label();
+            skillTargetOptionsLabel = new System.Windows.Forms.Label();
+            label1 = new System.Windows.Forms.Label();
+            skillRangeLabel = new System.Windows.Forms.Label();
             formMenuStrip.SuspendLayout();
             this.mainFormTabControl.SuspendLayout();
             this.skillsTabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.energyCostNumericUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.x)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.skillRangeNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.skillEnergyCostNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.skillActionCostNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // formMenuStrip
@@ -71,7 +81,7 @@
             this.fileToolStripMenuItem});
             formMenuStrip.Location = new System.Drawing.Point(0, 0);
             formMenuStrip.Name = "formMenuStrip";
-            formMenuStrip.Size = new System.Drawing.Size(371, 24);
+            formMenuStrip.Size = new System.Drawing.Size(376, 24);
             formMenuStrip.TabIndex = 3;
             formMenuStrip.Text = "menuStrip1";
             // 
@@ -121,23 +131,23 @@
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             // 
-            // classRestrictionLabel
+            // skillClassRestrictionLabel
             // 
-            classRestrictionLabel.AutoSize = true;
-            classRestrictionLabel.Location = new System.Drawing.Point(129, 35);
-            classRestrictionLabel.Name = "classRestrictionLabel";
-            classRestrictionLabel.Size = new System.Drawing.Size(85, 13);
-            classRestrictionLabel.TabIndex = 5;
-            classRestrictionLabel.Text = "Class Restriction";
+            skillClassRestrictionLabel.AutoSize = true;
+            skillClassRestrictionLabel.Location = new System.Drawing.Point(129, 35);
+            skillClassRestrictionLabel.Name = "skillClassRestrictionLabel";
+            skillClassRestrictionLabel.Size = new System.Drawing.Size(85, 13);
+            skillClassRestrictionLabel.TabIndex = 5;
+            skillClassRestrictionLabel.Text = "Class Restriction";
             // 
-            // actionCostLabel
+            // skillActionCostLabel
             // 
-            actionCostLabel.AutoSize = true;
-            actionCostLabel.Location = new System.Drawing.Point(129, 61);
-            actionCostLabel.Name = "actionCostLabel";
-            actionCostLabel.Size = new System.Drawing.Size(61, 13);
-            actionCostLabel.TabIndex = 7;
-            actionCostLabel.Text = "Action Cost";
+            skillActionCostLabel.AutoSize = true;
+            skillActionCostLabel.Location = new System.Drawing.Point(129, 61);
+            skillActionCostLabel.Name = "skillActionCostLabel";
+            skillActionCostLabel.Size = new System.Drawing.Size(61, 13);
+            skillActionCostLabel.TabIndex = 7;
+            skillActionCostLabel.Text = "Action Cost";
             // 
             // skillNameLabel
             // 
@@ -148,23 +158,40 @@
             skillNameLabel.TabIndex = 3;
             skillNameLabel.Text = "Skill Name";
             // 
-            // energyCostLabel
+            // skillEnergyCostLabel
             // 
-            energyCostLabel.AutoSize = true;
-            energyCostLabel.Location = new System.Drawing.Point(129, 87);
-            energyCostLabel.Name = "energyCostLabel";
-            energyCostLabel.Size = new System.Drawing.Size(64, 13);
-            energyCostLabel.TabIndex = 9;
-            energyCostLabel.Text = "Energy Cost";
+            skillEnergyCostLabel.AutoSize = true;
+            skillEnergyCostLabel.Location = new System.Drawing.Point(129, 87);
+            skillEnergyCostLabel.Name = "skillEnergyCostLabel";
+            skillEnergyCostLabel.Size = new System.Drawing.Size(64, 13);
+            skillEnergyCostLabel.TabIndex = 9;
+            skillEnergyCostLabel.Text = "Energy Cost";
             // 
-            // targetTypeLabel
+            // skillTargetTypeLabel
             // 
-            targetTypeLabel.AutoSize = true;
-            targetTypeLabel.Location = new System.Drawing.Point(129, 114);
-            targetTypeLabel.Name = "targetTypeLabel";
-            targetTypeLabel.Size = new System.Drawing.Size(65, 13);
-            targetTypeLabel.TabIndex = 11;
-            targetTypeLabel.Text = "Target Type";
+            skillTargetTypeLabel.AutoSize = true;
+            skillTargetTypeLabel.Location = new System.Drawing.Point(129, 114);
+            skillTargetTypeLabel.Name = "skillTargetTypeLabel";
+            skillTargetTypeLabel.Size = new System.Drawing.Size(65, 13);
+            skillTargetTypeLabel.TabIndex = 11;
+            skillTargetTypeLabel.Text = "Target Type";
+            // 
+            // skillTargetOptionsLabel
+            // 
+            skillTargetOptionsLabel.AutoSize = true;
+            skillTargetOptionsLabel.Location = new System.Drawing.Point(129, 141);
+            skillTargetOptionsLabel.Name = "skillTargetOptionsLabel";
+            skillTargetOptionsLabel.Size = new System.Drawing.Size(77, 13);
+            skillTargetOptionsLabel.TabIndex = 13;
+            skillTargetOptionsLabel.Text = "Target Options";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(129, 171);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(0, 13);
+            label1.TabIndex = 14;
             // 
             // dataSourceTextBox
             // 
@@ -173,7 +200,7 @@
             this.dataSourceTextBox.Location = new System.Drawing.Point(0, 24);
             this.dataSourceTextBox.Name = "dataSourceTextBox";
             this.dataSourceTextBox.ReadOnly = true;
-            this.dataSourceTextBox.Size = new System.Drawing.Size(371, 20);
+            this.dataSourceTextBox.Size = new System.Drawing.Size(376, 20);
             this.dataSourceTextBox.TabIndex = 0;
             // 
             // openDataSourceDialog
@@ -188,18 +215,24 @@
             this.mainFormTabControl.Location = new System.Drawing.Point(0, 44);
             this.mainFormTabControl.Name = "mainFormTabControl";
             this.mainFormTabControl.SelectedIndex = 0;
-            this.mainFormTabControl.Size = new System.Drawing.Size(371, 402);
+            this.mainFormTabControl.Size = new System.Drawing.Size(376, 314);
             this.mainFormTabControl.TabIndex = 4;
             // 
             // skillsTabPage
             // 
-            this.skillsTabPage.Controls.Add(targetTypeLabel);
-            this.skillsTabPage.Controls.Add(this.targetTypeComboBox);
-            this.skillsTabPage.Controls.Add(energyCostLabel);
-            this.skillsTabPage.Controls.Add(this.energyCostNumericUpDown);
-            this.skillsTabPage.Controls.Add(actionCostLabel);
-            this.skillsTabPage.Controls.Add(this.x);
-            this.skillsTabPage.Controls.Add(classRestrictionLabel);
+            this.skillsTabPage.Controls.Add(skillRangeLabel);
+            this.skillsTabPage.Controls.Add(this.skillRangeNumericUpDown);
+            this.skillsTabPage.Controls.Add(this.skillRequiresLineOfSightCheckBox);
+            this.skillsTabPage.Controls.Add(label1);
+            this.skillsTabPage.Controls.Add(skillTargetOptionsLabel);
+            this.skillsTabPage.Controls.Add(this.skillTargetOptionsComboBox);
+            this.skillsTabPage.Controls.Add(skillTargetTypeLabel);
+            this.skillsTabPage.Controls.Add(this.skillTargetTypeComboBox);
+            this.skillsTabPage.Controls.Add(skillEnergyCostLabel);
+            this.skillsTabPage.Controls.Add(this.skillEnergyCostNumericUpDown);
+            this.skillsTabPage.Controls.Add(skillActionCostLabel);
+            this.skillsTabPage.Controls.Add(this.skillActionCostNumericUpDown);
+            this.skillsTabPage.Controls.Add(skillClassRestrictionLabel);
             this.skillsTabPage.Controls.Add(this.skillClassRestrictionComboBox);
             this.skillsTabPage.Controls.Add(skillNameLabel);
             this.skillsTabPage.Controls.Add(this.skillNameTextBox);
@@ -208,42 +241,84 @@
             this.skillsTabPage.Location = new System.Drawing.Point(4, 22);
             this.skillsTabPage.Name = "skillsTabPage";
             this.skillsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.skillsTabPage.Size = new System.Drawing.Size(363, 376);
+            this.skillsTabPage.Size = new System.Drawing.Size(368, 288);
             this.skillsTabPage.TabIndex = 0;
             this.skillsTabPage.Text = "Skills";
             this.skillsTabPage.UseVisualStyleBackColor = true;
             // 
-            // targetTypeComboBox
+            // skillRangeNumericUpDown
             // 
-            this.targetTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.skillRangeNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.targetTypeComboBox.Enabled = false;
-            this.targetTypeComboBox.FormattingEnabled = true;
-            this.targetTypeComboBox.Items.AddRange(new object[] {
+            this.skillRangeNumericUpDown.Enabled = false;
+            this.skillRangeNumericUpDown.Location = new System.Drawing.Point(174, 165);
+            this.skillRangeNumericUpDown.Name = "skillRangeNumericUpDown";
+            this.skillRangeNumericUpDown.Size = new System.Drawing.Size(188, 20);
+            this.skillRangeNumericUpDown.TabIndex = 16;
+            // 
+            // skillRequiresLineOfSightCheckBox
+            // 
+            this.skillRequiresLineOfSightCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.skillRequiresLineOfSightCheckBox.AutoSize = true;
+            this.skillRequiresLineOfSightCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.skillRequiresLineOfSightCheckBox.Enabled = false;
+            this.skillRequiresLineOfSightCheckBox.Location = new System.Drawing.Point(232, 191);
+            this.skillRequiresLineOfSightCheckBox.Name = "skillRequiresLineOfSightCheckBox";
+            this.skillRequiresLineOfSightCheckBox.Size = new System.Drawing.Size(130, 17);
+            this.skillRequiresLineOfSightCheckBox.TabIndex = 15;
+            this.skillRequiresLineOfSightCheckBox.Text = "Requires Line of Sight";
+            this.skillRequiresLineOfSightCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // skillTargetOptionsComboBox
+            // 
+            this.skillTargetOptionsComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.skillTargetOptionsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.skillTargetOptionsComboBox.Enabled = false;
+            this.skillTargetOptionsComboBox.FormattingEnabled = true;
+            this.skillTargetOptionsComboBox.Items.AddRange(new object[] {
+            "None"});
+            this.skillTargetOptionsComboBox.Location = new System.Drawing.Point(212, 138);
+            this.skillTargetOptionsComboBox.Name = "skillTargetOptionsComboBox";
+            this.skillTargetOptionsComboBox.Size = new System.Drawing.Size(150, 21);
+            this.skillTargetOptionsComboBox.TabIndex = 12;
+            // 
+            // skillTargetTypeComboBox
+            // 
+            this.skillTargetTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.skillTargetTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.skillTargetTypeComboBox.Enabled = false;
+            this.skillTargetTypeComboBox.FormattingEnabled = true;
+            this.skillTargetTypeComboBox.Items.AddRange(new object[] {
             "None",
             "Entity",
             "Tile"});
-            this.targetTypeComboBox.Location = new System.Drawing.Point(200, 111);
-            this.targetTypeComboBox.Name = "targetTypeComboBox";
-            this.targetTypeComboBox.Size = new System.Drawing.Size(157, 21);
-            this.targetTypeComboBox.TabIndex = 10;
+            this.skillTargetTypeComboBox.Location = new System.Drawing.Point(200, 111);
+            this.skillTargetTypeComboBox.Name = "skillTargetTypeComboBox";
+            this.skillTargetTypeComboBox.Size = new System.Drawing.Size(162, 21);
+            this.skillTargetTypeComboBox.TabIndex = 10;
             // 
-            // energyCostNumericUpDown
+            // skillEnergyCostNumericUpDown
             // 
-            this.energyCostNumericUpDown.Enabled = false;
-            this.energyCostNumericUpDown.Location = new System.Drawing.Point(199, 85);
-            this.energyCostNumericUpDown.Name = "energyCostNumericUpDown";
-            this.energyCostNumericUpDown.Size = new System.Drawing.Size(158, 20);
-            this.energyCostNumericUpDown.TabIndex = 8;
+            this.skillEnergyCostNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.skillEnergyCostNumericUpDown.Enabled = false;
+            this.skillEnergyCostNumericUpDown.Location = new System.Drawing.Point(199, 85);
+            this.skillEnergyCostNumericUpDown.Name = "skillEnergyCostNumericUpDown";
+            this.skillEnergyCostNumericUpDown.Size = new System.Drawing.Size(163, 20);
+            this.skillEnergyCostNumericUpDown.TabIndex = 8;
             // 
-            // x
+            // skillActionCostNumericUpDown
             // 
-            this.x.Enabled = false;
-            this.x.Location = new System.Drawing.Point(196, 59);
-            this.x.Name = "x";
-            this.x.Size = new System.Drawing.Size(161, 20);
-            this.x.TabIndex = 6;
+            this.skillActionCostNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.skillActionCostNumericUpDown.Enabled = false;
+            this.skillActionCostNumericUpDown.Location = new System.Drawing.Point(196, 59);
+            this.skillActionCostNumericUpDown.Name = "skillActionCostNumericUpDown";
+            this.skillActionCostNumericUpDown.Size = new System.Drawing.Size(166, 20);
+            this.skillActionCostNumericUpDown.TabIndex = 6;
             // 
             // skillClassRestrictionComboBox
             // 
@@ -260,7 +335,7 @@
             "Cleric"});
             this.skillClassRestrictionComboBox.Location = new System.Drawing.Point(220, 32);
             this.skillClassRestrictionComboBox.Name = "skillClassRestrictionComboBox";
-            this.skillClassRestrictionComboBox.Size = new System.Drawing.Size(137, 21);
+            this.skillClassRestrictionComboBox.Size = new System.Drawing.Size(142, 21);
             this.skillClassRestrictionComboBox.TabIndex = 4;
             // 
             // skillNameTextBox
@@ -270,13 +345,13 @@
             this.skillNameTextBox.Enabled = false;
             this.skillNameTextBox.Location = new System.Drawing.Point(192, 6);
             this.skillNameTextBox.Name = "skillNameTextBox";
-            this.skillNameTextBox.Size = new System.Drawing.Size(165, 20);
+            this.skillNameTextBox.Size = new System.Drawing.Size(170, 20);
             this.skillNameTextBox.TabIndex = 2;
             // 
             // newActionButton
             // 
             this.newActionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.newActionButton.Location = new System.Drawing.Point(3, 345);
+            this.newActionButton.Location = new System.Drawing.Point(3, 257);
             this.newActionButton.Name = "newActionButton";
             this.newActionButton.Size = new System.Drawing.Size(120, 23);
             this.newActionButton.TabIndex = 1;
@@ -290,7 +365,7 @@
             this.skillsListBox.FormattingEnabled = true;
             this.skillsListBox.Location = new System.Drawing.Point(3, 3);
             this.skillsListBox.Name = "skillsListBox";
-            this.skillsListBox.Size = new System.Drawing.Size(120, 329);
+            this.skillsListBox.Size = new System.Drawing.Size(120, 251);
             this.skillsListBox.TabIndex = 0;
             // 
             // saveDataSourceDialog
@@ -300,11 +375,20 @@
             this.saveDataSourceDialog.DefaultExt = "txt";
             this.saveDataSourceDialog.Filter = "Text files (.txt)|*.txt";
             // 
+            // skillRangeLabel
+            // 
+            skillRangeLabel.AutoSize = true;
+            skillRangeLabel.Location = new System.Drawing.Point(129, 167);
+            skillRangeLabel.Name = "skillRangeLabel";
+            skillRangeLabel.Size = new System.Drawing.Size(39, 13);
+            skillRangeLabel.TabIndex = 17;
+            skillRangeLabel.Text = "Range";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(371, 446);
+            this.ClientSize = new System.Drawing.Size(376, 358);
             this.Controls.Add(this.mainFormTabControl);
             this.Controls.Add(this.dataSourceTextBox);
             this.Controls.Add(formMenuStrip);
@@ -316,8 +400,9 @@
             this.mainFormTabControl.ResumeLayout(false);
             this.skillsTabPage.ResumeLayout(false);
             this.skillsTabPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.energyCostNumericUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.x)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.skillRangeNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.skillEnergyCostNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.skillActionCostNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -338,11 +423,14 @@
         private System.Windows.Forms.ListBox skillsListBox;
         private System.Windows.Forms.Button newActionButton;
         private System.Windows.Forms.SaveFileDialog saveDataSourceDialog;
-        private System.Windows.Forms.NumericUpDown x;
+        private System.Windows.Forms.NumericUpDown skillActionCostNumericUpDown;
         private System.Windows.Forms.ComboBox skillClassRestrictionComboBox;
         private System.Windows.Forms.TextBox skillNameTextBox;
-        private System.Windows.Forms.NumericUpDown energyCostNumericUpDown;
-        private System.Windows.Forms.ComboBox targetTypeComboBox;
+        private System.Windows.Forms.NumericUpDown skillEnergyCostNumericUpDown;
+        private System.Windows.Forms.ComboBox skillTargetTypeComboBox;
+        private System.Windows.Forms.ComboBox skillTargetOptionsComboBox;
+        private System.Windows.Forms.NumericUpDown skillRangeNumericUpDown;
+        private System.Windows.Forms.CheckBox skillRequiresLineOfSightCheckBox;
 
 
     }

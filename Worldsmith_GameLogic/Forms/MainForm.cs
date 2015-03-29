@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using AWFMetadata;
+using AWFMetadata.Skills;
 
 namespace Worldsmith.GameLogic
 {
@@ -17,6 +18,7 @@ namespace Worldsmith.GameLogic
     {
         DataModels.MainFormDataModel formData = new DataModels.MainFormDataModel();
         DataModels.GameDataDataModel gameData = new DataModels.GameDataDataModel(new GameData());
+        DataModels.SkillDefinitionDataModel skillData = new DataModels.SkillDefinitionDataModel(new SkillDefinition());
 
         public MainForm()
         {
@@ -33,8 +35,23 @@ namespace Worldsmith.GameLogic
             newActionButton.Click += (object sender, EventArgs e) => { CreateNewSkill(); };
             skillsListBox.SelectedIndexChanged += (object sender, EventArgs e) => { SkillsListSelectedIndexChanged(); };
 
+            skillNameTextBox.TextChanged += (object sender, EventArgs e) => { UpdateCurrentListItemText(); };
+            skillNameTextBox.DataBindings.Add("Text", skillData, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
+            skillClassRestrictionComboBox.DataBindings.Add("SelectedIndex", skillData, "ClassRestriction", true, DataSourceUpdateMode.OnPropertyChanged);
+            skillActionCostNumericUpDown.DataBindings.Add("Value", skillData, "ActionCost", true, DataSourceUpdateMode.OnPropertyChanged);
+            skillEnergyCostNumericUpDown.DataBindings.Add("Value", skillData, "EnergyCost", true, DataSourceUpdateMode.OnPropertyChanged);
+            skillTargetTypeComboBox.DataBindings.Add("SelectedIndex", skillData, "TargetType", true, DataSourceUpdateMode.OnPropertyChanged);
+            skillTargetOptionsComboBox.DataBindings.Add("SelectedIndex", skillData, "TargetOptions", true, DataSourceUpdateMode.OnPropertyChanged);
+
             skillsListBox.DisplayMember = "Name";
             skillsListBox.DataSource = gameData.Skills;
+
+            skillData.PropertyChanged += (object sender, PropertyChangedEventArgs args) =>
+            {
+                TargetTypeChanged();
+            };
+
+            SkillsListSelectedIndexChanged();
         }
         
         #region File IO
@@ -96,14 +113,45 @@ namespace Worldsmith.GameLogic
             int selected = skillsListBox.SelectedIndex;
             if (selected >= 0)
             {
+                skillData.Skill = gameData.Skills[selected].Skill;
                 if (!skillNameTextBox.Enabled) skillNameTextBox.Enabled = true;
-                skillNameTextBox.DataBindings.Clear();
-                skillNameTextBox.DataBindings.Add("Text", gameData.Skills[selected], "Name", true, DataSourceUpdateMode.OnPropertyChanged);
-
                 if (!skillClassRestrictionComboBox.Enabled) skillClassRestrictionComboBox.Enabled = true;
-                skillClassRestrictionComboBox.DataBindings.Clear();
-                skillClassRestrictionComboBox.DataBindings.Add("SelectedIndex", gameData.Skills[selected], "ClassRestriction", true, DataSourceUpdateMode.OnPropertyChanged);
+                if (!skillActionCostNumericUpDown.Enabled) skillActionCostNumericUpDown.Enabled = true;
+                if (!skillEnergyCostNumericUpDown.Enabled) skillEnergyCostNumericUpDown.Enabled = true;
+                if (!skillTargetTypeComboBox.Enabled) skillTargetTypeComboBox.Enabled = true;
             }
+        }
+
+        private void UpdateCurrentListItemText()
+        {
+            if (gameData.Skills != null && skillsListBox.SelectedValue != null) gameData.Skills[skillsListBox.SelectedIndex].Name = skillNameTextBox.Text;
+        }
+
+        private void TargetTypeChanged()
+        {
+            skillTargetOptionsComboBox.Items.Clear();
+            skillTargetOptionsComboBox.Items.Add ("None");
+            switch (skillData.Skill.targetType)
+            {
+                case SkillTargetType.None:
+                    skillTargetOptionsComboBox.Enabled = false;
+                    break;
+                case SkillTargetType.Entity:
+                    skillTargetOptionsComboBox.Enabled = true;
+                    skillTargetOptionsComboBox.Items.Add("Any");
+                    skillTargetOptionsComboBox.Items.Add("Self");
+                    skillTargetOptionsComboBox.Items.Add("Ally");
+                    skillTargetOptionsComboBox.Items.Add("Enemy");
+                    break;
+                case SkillTargetType.Tile:
+                    skillTargetOptionsComboBox.Enabled = true;
+                    skillTargetOptionsComboBox.Items.Add("Any");
+                    skillTargetOptionsComboBox.Items.Add("Empty");
+                    skillTargetOptionsComboBox.Items.Add("Occupied");
+                    skillTargetOptionsComboBox.Items.Add("Path");
+                    break;
+            }
+            skillData.TargetOptions = 0;
         }
 
         #endregion
