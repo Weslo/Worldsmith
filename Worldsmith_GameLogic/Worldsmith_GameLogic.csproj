@@ -51,6 +51,7 @@
     <Compile Include="DataModels\MainFormDataModel.cs" />
     <Compile Include="DataModels\SkillDefinitionDataModel.cs" />
     <Compile Include="DataModels\GameDataDataModel.cs" />
+    <Compile Include="DataModels\SkillEffectDefinitionDataModel.cs" />
     <Compile Include="Data\AWFMetadata.cs" />
     <Compile Include="Interfaces\IDataModel.cs" />
     <Compile Include="Forms\MainForm.cs">

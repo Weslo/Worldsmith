@@ -11,19 +11,24 @@ namespace Worldsmith.GameLogic.DataModels
 {
     public class SkillDefinitionDataModel : IDataModel
     {
-        private SkillDefinition skill;
-
         public SkillDefinitionDataModel(SkillDefinition skill)
         {
             this.skill = skill;
         }
 
+        private SkillDefinition skill;
         public SkillDefinition Skill
         {
             get { return this.skill; }
             set
             {
                 if (this.skill == value) return;
+
+                Effects = new BindingList<SkillEffectDefinitionDataModel>();
+                foreach (SkillEffectDefinition effect in this.skill.skillEffects)
+                {
+                    Effects.Add(new SkillEffectDefinitionDataModel(effect));
+                }
 
                 OnPropertyChanged("Skill");
 
@@ -38,6 +43,12 @@ namespace Worldsmith.GameLogic.DataModels
                 if (this.skill.entityTargetOptions != prev.entityTargetOptions || this.skill.tileTargetOptions != value.tileTargetOptions) OnPropertyChanged("TargetOptions");
                 if (this.skill.range != prev.range) OnPropertyChanged("Range");
                 if (this.skill.requiresLineOfSight != prev.requiresLineOfSight) OnPropertyChanged("RequiresLineOfSight");
+
+                Effects = new BindingList<SkillEffectDefinitionDataModel>();
+                foreach (SkillEffectDefinition effect in this.skill.skillEffects)
+                {
+                    Effects.Add(new SkillEffectDefinitionDataModel(effect));
+                }
             }
         }
 
@@ -170,6 +181,13 @@ namespace Worldsmith.GameLogic.DataModels
                 OnPropertyChanged("Attack");
             }
         }
-        public BindingList<SkillEffectDefinition> Effects { get; set; }
+
+        public BindingList<SkillEffectDefinitionDataModel> Effects { get; set; }
+
+        public void CreateNewEffect(SkillEffectDefinition effect)
+        {
+            skill.skillEffects.Add(effect);
+            Effects.Add(new SkillEffectDefinitionDataModel(effect));
+        }
     }
 }

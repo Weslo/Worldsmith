@@ -19,6 +19,7 @@ namespace Worldsmith.GameLogic
         DataModels.MainFormDataModel formData = new DataModels.MainFormDataModel();
         DataModels.GameDataDataModel gameData = new DataModels.GameDataDataModel(new GameData());
         DataModels.SkillDefinitionDataModel skillData = new DataModels.SkillDefinitionDataModel(new SkillDefinition());
+        DataModels.SkillEffectDefinitionDataModel skillEffectData = new DataModels.SkillEffectDefinitionDataModel(new SkillEffectDefinition());
 
         public MainForm()
         {
@@ -35,7 +36,7 @@ namespace Worldsmith.GameLogic
             newActionButton.Click += (object sender, EventArgs e) => { CreateNewSkill(); };
             skillsListBox.SelectedIndexChanged += (object sender, EventArgs e) => { SkillsListSelectedIndexChanged(); };
 
-            skillNameTextBox.TextChanged += (object sender, EventArgs e) => { UpdateCurrentListItemText(); };
+            skillNameTextBox.TextChanged += (object sender, EventArgs e) => { UpdateCurrentSkillListItemText(); };
             skillNameTextBox.DataBindings.Add("Text", skillData, "Name", true, DataSourceUpdateMode.OnValidation);
             skillClassRestrictionComboBox.DataBindings.Add("SelectedIndex", skillData, "ClassRestriction", true, DataSourceUpdateMode.OnPropertyChanged);
             skillActionCostNumericUpDown.DataBindings.Add("Value", skillData, "ActionCost", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -47,10 +48,20 @@ namespace Worldsmith.GameLogic
             skillRequiresLineOfSightCheckBox.DataBindings.Add("Checked", skillData, "RequiresLineOfSight", true, DataSourceUpdateMode.OnPropertyChanged);
             skillAttackCheckBox.DataBindings.Add("Checked", skillData, "Attack", true, DataSourceUpdateMode.OnPropertyChanged);
 
+            skillAddEffectButton.Click += (object sender, EventArgs e) => { AddSkillEffect(); };
+            skillEffectsListBox.SelectedIndexChanged += (object sender, EventArgs e) => { SkillEffectsListSelectedIndexChanged(); };
+
+            skillEffectEffectComboBox.DataBindings.Add("SelectedIndex", skillEffectData, "Effect", true, DataSourceUpdateMode.OnPropertyChanged);
+            skillEffectEffectComboBox.Validated += (object o, EventArgs e) => { UpdateCurrentSkillEffectListItemText(); };
+
             skillsListBox.DisplayMember = "Name";
             skillsListBox.DataSource = gameData.Skills;
 
+            skillEffectsListBox.DisplayMember = "Display";
+            skillEffectsListBox.DataSource = skillData.Effects;
+
             SkillsListSelectedIndexChanged();
+            SkillEffectsListSelectedIndexChanged();
         }
         
         #region File IO
@@ -78,7 +89,12 @@ namespace Worldsmith.GameLogic
             {
                 skillsListBox.DisplayMember = "Name";
                 skillsListBox.DataSource = gameData.Skills;
+
+                skillEffectsListBox.DisplayMember = "Display";
+                skillEffectsListBox.DataSource = skillData.Effects;
+
                 SkillsListSelectedIndexChanged();
+                SkillEffectsListSelectedIndexChanged();
             }
             else
             {
@@ -108,12 +124,20 @@ namespace Worldsmith.GameLogic
             SkillsListSelectedIndexChanged();
         }
 
+        private void AddSkillEffect()
+        {
+            skillData.CreateNewEffect(new AWFMetadata.Skills.SkillEffectDefinition());
+            SkillEffectsListSelectedIndexChanged();
+        }
+
         private void SkillsListSelectedIndexChanged()
         {
             int selected = skillsListBox.SelectedIndex;
             if (selected >= 0)
             {
                 skillData.Skill = gameData.Skills[selected].Skill;
+
+                skillEffectsListBox.DataSource = skillData.Effects;
                 
                 if (!skillNameTextBox.Enabled) skillNameTextBox.Enabled = true;
                 if (!skillClassRestrictionComboBox.Enabled) skillClassRestrictionComboBox.Enabled = true;
@@ -128,9 +152,25 @@ namespace Worldsmith.GameLogic
             }
         }
 
-        private void UpdateCurrentListItemText()
+        private void SkillEffectsListSelectedIndexChanged()
+        {
+            int selected = skillEffectsListBox.SelectedIndex;
+            if (selected >= 0)
+            {
+                skillEffectData.SkillEffect = skillData.Effects[selected].SkillEffect;
+
+                if (!skillEffectEffectComboBox.Enabled) skillEffectEffectComboBox.Enabled = true;
+            }
+        }
+
+        private void UpdateCurrentSkillListItemText()
         {
             if (gameData.Skills != null && skillsListBox.SelectedValue != null) gameData.Skills[skillsListBox.SelectedIndex].Name = skillNameTextBox.Text;
+        }
+
+        private void UpdateCurrentSkillEffectListItemText()
+        {
+            if (skillData.Effects != null && skillEffectsListBox.SelectedValue != null) skillData.Effects.ResetBindings();
         }
 
         private void TargetTypeChanged()

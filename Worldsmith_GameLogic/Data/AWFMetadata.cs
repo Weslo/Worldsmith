@@ -43,7 +43,7 @@ namespace AWFMetadata
             Path,
         }
 
-        public enum SkillParameterOptions
+        public enum SkillIntegerParameterOptions
         {
             None,
 
@@ -65,11 +65,19 @@ namespace AWFMetadata
             DistanceToTarget,
         }
 
-        public enum SkillEffectApplicationTarget
+        public enum SkillEntityParameterOptions
         {
             None,
             Self,
             Target,
+        }
+
+        public enum SkillTileParameterOptions
+        {
+            None,
+            TargetTile,
+            TargetEntityPosition,
+            SourceEntityPosition,
         }
 
         public enum SkillEffect
@@ -78,6 +86,7 @@ namespace AWFMetadata
             Move,
             Damage,
             ApplyStatusEffect,
+            RemoveStatusEffect,
             Cleanse,
         }
 
@@ -116,6 +125,13 @@ namespace AWFMetadata
             AttackHits,
         }
 
+        public enum SkillConditionClauseRequirement
+        {
+            None,
+            MustHave,
+            MustHaveOneOf,
+        }
+
         public class SkillDefinition
         {
             public int id = 0;
@@ -134,19 +150,21 @@ namespace AWFMetadata
 
             public bool attack = false;
 
-            public List<SkillEffect> skillEffects = new List<SkillEffect> ();
+            public List<SkillEffectDefinition> skillEffects = new List<SkillEffectDefinition>();
         }
 
         public class SkillEffectDefinition
         {
             public SkillEffect effect = SkillEffect.None;
-            public List<SkillParameterOptions> parameter = new List<SkillParameterOptions> ();
-            public SkillEffectApplicationTarget target = SkillEffectApplicationTarget.None;
-            public List<SkillEffectApplicationTarget> conditions = new List<SkillEffectApplicationTarget>();
+            public List<SkillIntegerParameterOptions> integerParameterOptions = new List<SkillIntegerParameterOptions> ();
+            public SkillEntityParameterOptions entityTarget = SkillEntityParameterOptions.None;
+            public SkillTileParameterOptions tileTarget = SkillTileParameterOptions.None;
+            public List<SkillConditionDefinition> conditions = new List<SkillConditionDefinition>();
         }
 
         public class SkillConditionDefinition
         {
+            public SkillConditionClauseRequirement requirement = SkillConditionClauseRequirement.None;
             public SkillConditionClause clause = SkillConditionClause.None;
             public StatusEffect effectParameter = StatusEffect.None;
         }
