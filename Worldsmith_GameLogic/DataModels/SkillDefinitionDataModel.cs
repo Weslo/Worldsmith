@@ -30,6 +30,8 @@ namespace Worldsmith.GameLogic.DataModels
                 OnPropertyChanged("ClassRestriction");
                 OnPropertyChanged("ActionCost");
                 OnPropertyChanged("EnergyCost");
+                OnPropertyChanged("TargetType");
+                OnPropertyChanged("TargetOptions");
             }
         }
 
@@ -122,6 +124,32 @@ namespace Worldsmith.GameLogic.DataModels
                         skill.tileTargetOptions = (TileTargetOptions)value;
                         break;
                 }
+
+                OnPropertyChanged("TargetOptions");
+            }
+        }
+
+        public int Range
+        {
+            get { return skill.range; }
+            set
+            {
+                if (skill.range == value) return;
+
+                skill.range = value;
+                OnPropertyChanged("Range");
+            }
+        }
+
+        public bool RequiresLineOfSight
+        {
+            get { return skill.requiresLineOfSight; }
+            set
+            {
+                if (skill.requiresLineOfSight == value) return;
+
+                skill.requiresLineOfSight = value;
+                OnPropertyChanged("RequiresLineOfSight");
             }
         }
     }

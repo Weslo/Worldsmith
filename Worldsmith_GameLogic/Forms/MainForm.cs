@@ -35,21 +35,18 @@ namespace Worldsmith.GameLogic
             newActionButton.Click += (object sender, EventArgs e) => { CreateNewSkill(); };
             skillsListBox.SelectedIndexChanged += (object sender, EventArgs e) => { SkillsListSelectedIndexChanged(); };
 
-            skillNameTextBox.TextChanged += (object sender, EventArgs e) => { UpdateCurrentListItemText(); };
-            skillNameTextBox.DataBindings.Add("Text", skillData, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
+            //skillNameTextBox.TextChanged += (object sender, EventArgs e) => { UpdateCurrentListItemText(); };
+            skillNameTextBox.DataBindings.Add("Text", skillData, "Name", true, DataSourceUpdateMode.OnValidation);
             skillClassRestrictionComboBox.DataBindings.Add("SelectedIndex", skillData, "ClassRestriction", true, DataSourceUpdateMode.OnPropertyChanged);
             skillActionCostNumericUpDown.DataBindings.Add("Value", skillData, "ActionCost", true, DataSourceUpdateMode.OnPropertyChanged);
             skillEnergyCostNumericUpDown.DataBindings.Add("Value", skillData, "EnergyCost", true, DataSourceUpdateMode.OnPropertyChanged);
             skillTargetTypeComboBox.DataBindings.Add("SelectedIndex", skillData, "TargetType", true, DataSourceUpdateMode.OnPropertyChanged);
             skillTargetOptionsComboBox.DataBindings.Add("SelectedIndex", skillData, "TargetOptions", true, DataSourceUpdateMode.OnPropertyChanged);
+            skillRangeNumericUpDown.DataBindings.Add("Value", skillData, "Range", true, DataSourceUpdateMode.OnPropertyChanged);
+            skillRequiresLineOfSightCheckBox.DataBindings.Add("Checked", skillData, "RequiresLineOfSight", true, DataSourceUpdateMode.OnPropertyChanged);
 
             skillsListBox.DisplayMember = "Name";
             skillsListBox.DataSource = gameData.Skills;
-
-            skillData.PropertyChanged += (object sender, PropertyChangedEventArgs args) =>
-            {
-                TargetTypeChanged();
-            };
 
             SkillsListSelectedIndexChanged();
         }
@@ -114,11 +111,16 @@ namespace Worldsmith.GameLogic
             if (selected >= 0)
             {
                 skillData.Skill = gameData.Skills[selected].Skill;
+                /*
                 if (!skillNameTextBox.Enabled) skillNameTextBox.Enabled = true;
                 if (!skillClassRestrictionComboBox.Enabled) skillClassRestrictionComboBox.Enabled = true;
                 if (!skillActionCostNumericUpDown.Enabled) skillActionCostNumericUpDown.Enabled = true;
                 if (!skillEnergyCostNumericUpDown.Enabled) skillEnergyCostNumericUpDown.Enabled = true;
                 if (!skillTargetTypeComboBox.Enabled) skillTargetTypeComboBox.Enabled = true;
+                if (!skillTargetOptionsComboBox.Enabled) skillTargetOptionsComboBox.Enabled = true;
+                if (!skillRangeNumericUpDown.Enabled) skillRangeNumericUpDown.Enabled = true;
+                if (!skillRequiresLineOfSightCheckBox.Enabled) skillRequiresLineOfSightCheckBox.Enabled = true;
+                */
             }
         }
 
