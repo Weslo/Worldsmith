@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace Worldsmith.GameLogic.DataModels
 
         public SkillDefinitionDataModel(SkillDefinition skill)
         {
-            this.Skill = skill;
+            this.skill = skill;
         }
 
         public SkillDefinition Skill
@@ -24,14 +25,19 @@ namespace Worldsmith.GameLogic.DataModels
             {
                 if (this.skill == value) return;
 
-                this.skill = value;
                 OnPropertyChanged("Skill");
-                OnPropertyChanged("Name");
-                OnPropertyChanged("ClassRestriction");
-                OnPropertyChanged("ActionCost");
-                OnPropertyChanged("EnergyCost");
-                OnPropertyChanged("TargetType");
-                OnPropertyChanged("TargetOptions");
+
+                SkillDefinition prev = this.skill;
+                this.skill = value;
+
+                if (this.skill.name != prev.name) OnPropertyChanged("Name");
+                if (this.skill.classRestriction != prev.classRestriction) OnPropertyChanged("ClassRestriction");
+                if (this.skill.actionCost != prev.actionCost) OnPropertyChanged("ActionCost");
+                if (this.skill.energyCost != prev.energyCost) OnPropertyChanged("EnergyCost");
+                if (this.skill.targetType != prev.targetType) OnPropertyChanged("TargetType");
+                if (this.skill.entityTargetOptions != prev.entityTargetOptions || this.skill.tileTargetOptions != value.tileTargetOptions) OnPropertyChanged("TargetOptions");
+                if (this.skill.range != prev.range) OnPropertyChanged("Range");
+                if (this.skill.requiresLineOfSight != prev.requiresLineOfSight) OnPropertyChanged("RequiresLineOfSight");
             }
         }
 
@@ -152,5 +158,18 @@ namespace Worldsmith.GameLogic.DataModels
                 OnPropertyChanged("RequiresLineOfSight");
             }
         }
+
+        public bool Attack
+        {
+            get { return skill.attack; }
+            set
+            {
+                if (skill.attack == value) return;
+
+                skill.attack = value;
+                OnPropertyChanged("Attack");
+            }
+        }
+        public BindingList<SkillEffectDefinition> Effects { get; set; }
     }
 }

@@ -37,6 +37,7 @@
             System.Windows.Forms.Label skillTargetOptionsLabel;
             System.Windows.Forms.Label label1;
             System.Windows.Forms.Label skillRangeLabel;
+            System.Windows.Forms.Label skillEffectsLabel;
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,6 +59,9 @@
             this.newActionButton = new System.Windows.Forms.Button();
             this.skillsListBox = new System.Windows.Forms.ListBox();
             this.saveDataSourceDialog = new System.Windows.Forms.SaveFileDialog();
+            this.skillAttackCheckBox = new System.Windows.Forms.CheckBox();
+            this.skillEffectsListBox = new System.Windows.Forms.ListBox();
+            this.skillAddEffectButton = new System.Windows.Forms.Button();
             formMenuStrip = new System.Windows.Forms.MenuStrip();
             skillClassRestrictionLabel = new System.Windows.Forms.Label();
             skillActionCostLabel = new System.Windows.Forms.Label();
@@ -67,6 +71,7 @@
             skillTargetOptionsLabel = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
             skillRangeLabel = new System.Windows.Forms.Label();
+            skillEffectsLabel = new System.Windows.Forms.Label();
             formMenuStrip.SuspendLayout();
             this.mainFormTabControl.SuspendLayout();
             this.skillsTabPage.SuspendLayout();
@@ -81,7 +86,7 @@
             this.fileToolStripMenuItem});
             formMenuStrip.Location = new System.Drawing.Point(0, 0);
             formMenuStrip.Name = "formMenuStrip";
-            formMenuStrip.Size = new System.Drawing.Size(376, 24);
+            formMenuStrip.Size = new System.Drawing.Size(428, 24);
             formMenuStrip.TabIndex = 3;
             formMenuStrip.Text = "menuStrip1";
             // 
@@ -209,7 +214,7 @@
             this.dataSourceTextBox.Location = new System.Drawing.Point(0, 24);
             this.dataSourceTextBox.Name = "dataSourceTextBox";
             this.dataSourceTextBox.ReadOnly = true;
-            this.dataSourceTextBox.Size = new System.Drawing.Size(376, 20);
+            this.dataSourceTextBox.Size = new System.Drawing.Size(428, 20);
             this.dataSourceTextBox.TabIndex = 0;
             // 
             // openDataSourceDialog
@@ -224,11 +229,15 @@
             this.mainFormTabControl.Location = new System.Drawing.Point(0, 44);
             this.mainFormTabControl.Name = "mainFormTabControl";
             this.mainFormTabControl.SelectedIndex = 0;
-            this.mainFormTabControl.Size = new System.Drawing.Size(376, 314);
+            this.mainFormTabControl.Size = new System.Drawing.Size(428, 481);
             this.mainFormTabControl.TabIndex = 4;
             // 
             // skillsTabPage
             // 
+            this.skillsTabPage.Controls.Add(this.skillAddEffectButton);
+            this.skillsTabPage.Controls.Add(skillEffectsLabel);
+            this.skillsTabPage.Controls.Add(this.skillEffectsListBox);
+            this.skillsTabPage.Controls.Add(this.skillAttackCheckBox);
             this.skillsTabPage.Controls.Add(skillRangeLabel);
             this.skillsTabPage.Controls.Add(this.skillRangeNumericUpDown);
             this.skillsTabPage.Controls.Add(this.skillRequiresLineOfSightCheckBox);
@@ -250,7 +259,7 @@
             this.skillsTabPage.Location = new System.Drawing.Point(4, 22);
             this.skillsTabPage.Name = "skillsTabPage";
             this.skillsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.skillsTabPage.Size = new System.Drawing.Size(368, 288);
+            this.skillsTabPage.Size = new System.Drawing.Size(420, 455);
             this.skillsTabPage.TabIndex = 0;
             this.skillsTabPage.Text = "Skills";
             this.skillsTabPage.UseVisualStyleBackColor = true;
@@ -259,18 +268,19 @@
             // 
             this.skillRangeNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.skillRangeNumericUpDown.Enabled = false;
             this.skillRangeNumericUpDown.Location = new System.Drawing.Point(174, 165);
             this.skillRangeNumericUpDown.Name = "skillRangeNumericUpDown";
-            this.skillRangeNumericUpDown.Size = new System.Drawing.Size(188, 20);
+            this.skillRangeNumericUpDown.Size = new System.Drawing.Size(240, 20);
             this.skillRangeNumericUpDown.TabIndex = 16;
             // 
             // skillRequiresLineOfSightCheckBox
             // 
-            this.skillRequiresLineOfSightCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.skillRequiresLineOfSightCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.skillRequiresLineOfSightCheckBox.AutoSize = true;
             this.skillRequiresLineOfSightCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.skillRequiresLineOfSightCheckBox.Location = new System.Drawing.Point(232, 191);
+            this.skillRequiresLineOfSightCheckBox.Enabled = false;
+            this.skillRequiresLineOfSightCheckBox.Location = new System.Drawing.Point(284, 191);
             this.skillRequiresLineOfSightCheckBox.Name = "skillRequiresLineOfSightCheckBox";
             this.skillRequiresLineOfSightCheckBox.Size = new System.Drawing.Size(130, 17);
             this.skillRequiresLineOfSightCheckBox.TabIndex = 15;
@@ -282,12 +292,13 @@
             this.skillTargetOptionsComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.skillTargetOptionsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.skillTargetOptionsComboBox.Enabled = false;
             this.skillTargetOptionsComboBox.FormattingEnabled = true;
             this.skillTargetOptionsComboBox.Items.AddRange(new object[] {
             "None"});
             this.skillTargetOptionsComboBox.Location = new System.Drawing.Point(212, 138);
             this.skillTargetOptionsComboBox.Name = "skillTargetOptionsComboBox";
-            this.skillTargetOptionsComboBox.Size = new System.Drawing.Size(150, 21);
+            this.skillTargetOptionsComboBox.Size = new System.Drawing.Size(202, 21);
             this.skillTargetOptionsComboBox.TabIndex = 12;
             // 
             // skillTargetTypeComboBox
@@ -295,6 +306,7 @@
             this.skillTargetTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.skillTargetTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.skillTargetTypeComboBox.Enabled = false;
             this.skillTargetTypeComboBox.FormattingEnabled = true;
             this.skillTargetTypeComboBox.Items.AddRange(new object[] {
             "None",
@@ -302,25 +314,27 @@
             "Tile"});
             this.skillTargetTypeComboBox.Location = new System.Drawing.Point(200, 111);
             this.skillTargetTypeComboBox.Name = "skillTargetTypeComboBox";
-            this.skillTargetTypeComboBox.Size = new System.Drawing.Size(162, 21);
+            this.skillTargetTypeComboBox.Size = new System.Drawing.Size(214, 21);
             this.skillTargetTypeComboBox.TabIndex = 10;
             // 
             // skillEnergyCostNumericUpDown
             // 
             this.skillEnergyCostNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.skillEnergyCostNumericUpDown.Enabled = false;
             this.skillEnergyCostNumericUpDown.Location = new System.Drawing.Point(199, 85);
             this.skillEnergyCostNumericUpDown.Name = "skillEnergyCostNumericUpDown";
-            this.skillEnergyCostNumericUpDown.Size = new System.Drawing.Size(163, 20);
+            this.skillEnergyCostNumericUpDown.Size = new System.Drawing.Size(215, 20);
             this.skillEnergyCostNumericUpDown.TabIndex = 8;
             // 
             // skillActionCostNumericUpDown
             // 
             this.skillActionCostNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.skillActionCostNumericUpDown.Enabled = false;
             this.skillActionCostNumericUpDown.Location = new System.Drawing.Point(196, 59);
             this.skillActionCostNumericUpDown.Name = "skillActionCostNumericUpDown";
-            this.skillActionCostNumericUpDown.Size = new System.Drawing.Size(166, 20);
+            this.skillActionCostNumericUpDown.Size = new System.Drawing.Size(218, 20);
             this.skillActionCostNumericUpDown.TabIndex = 6;
             // 
             // skillClassRestrictionComboBox
@@ -328,6 +342,7 @@
             this.skillClassRestrictionComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.skillClassRestrictionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.skillClassRestrictionComboBox.Enabled = false;
             this.skillClassRestrictionComboBox.FormattingEnabled = true;
             this.skillClassRestrictionComboBox.Items.AddRange(new object[] {
             "None",
@@ -337,26 +352,27 @@
             "Cleric"});
             this.skillClassRestrictionComboBox.Location = new System.Drawing.Point(220, 32);
             this.skillClassRestrictionComboBox.Name = "skillClassRestrictionComboBox";
-            this.skillClassRestrictionComboBox.Size = new System.Drawing.Size(142, 21);
+            this.skillClassRestrictionComboBox.Size = new System.Drawing.Size(194, 21);
             this.skillClassRestrictionComboBox.TabIndex = 4;
             // 
             // skillNameTextBox
             // 
             this.skillNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.skillNameTextBox.Enabled = false;
             this.skillNameTextBox.Location = new System.Drawing.Point(192, 6);
             this.skillNameTextBox.Name = "skillNameTextBox";
-            this.skillNameTextBox.Size = new System.Drawing.Size(170, 20);
+            this.skillNameTextBox.Size = new System.Drawing.Size(222, 20);
             this.skillNameTextBox.TabIndex = 2;
             // 
             // newActionButton
             // 
             this.newActionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.newActionButton.Location = new System.Drawing.Point(3, 257);
+            this.newActionButton.Location = new System.Drawing.Point(3, 424);
             this.newActionButton.Name = "newActionButton";
             this.newActionButton.Size = new System.Drawing.Size(120, 23);
             this.newActionButton.TabIndex = 1;
-            this.newActionButton.Text = "New";
+            this.newActionButton.Text = "New Action";
             this.newActionButton.UseVisualStyleBackColor = true;
             // 
             // skillsListBox
@@ -366,7 +382,7 @@
             this.skillsListBox.FormattingEnabled = true;
             this.skillsListBox.Location = new System.Drawing.Point(3, 3);
             this.skillsListBox.Name = "skillsListBox";
-            this.skillsListBox.Size = new System.Drawing.Size(120, 251);
+            this.skillsListBox.Size = new System.Drawing.Size(120, 407);
             this.skillsListBox.TabIndex = 0;
             // 
             // saveDataSourceDialog
@@ -376,15 +392,59 @@
             this.saveDataSourceDialog.DefaultExt = "txt";
             this.saveDataSourceDialog.Filter = "Text files (.txt)|*.txt";
             // 
+            // skillAttackCheckBox
+            // 
+            this.skillAttackCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.skillAttackCheckBox.AutoSize = true;
+            this.skillAttackCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.skillAttackCheckBox.Enabled = false;
+            this.skillAttackCheckBox.Location = new System.Drawing.Point(357, 214);
+            this.skillAttackCheckBox.Name = "skillAttackCheckBox";
+            this.skillAttackCheckBox.Size = new System.Drawing.Size(57, 17);
+            this.skillAttackCheckBox.TabIndex = 18;
+            this.skillAttackCheckBox.Text = "Attack";
+            this.skillAttackCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // skillEffectsListBox
+            // 
+            this.skillEffectsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.skillEffectsListBox.FormattingEnabled = true;
+            this.skillEffectsListBox.Location = new System.Drawing.Point(132, 237);
+            this.skillEffectsListBox.Name = "skillEffectsListBox";
+            this.skillEffectsListBox.Size = new System.Drawing.Size(82, 173);
+            this.skillEffectsListBox.TabIndex = 19;
+            // 
+            // skillEffectsLabel
+            // 
+            skillEffectsLabel.AutoSize = true;
+            skillEffectsLabel.Location = new System.Drawing.Point(129, 221);
+            skillEffectsLabel.Name = "skillEffectsLabel";
+            skillEffectsLabel.Size = new System.Drawing.Size(62, 13);
+            skillEffectsLabel.TabIndex = 20;
+            skillEffectsLabel.Text = "Skill Effects";
+            // 
+            // skillAddEffectButton
+            // 
+            this.skillAddEffectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.skillAddEffectButton.Enabled = false;
+            this.skillAddEffectButton.Location = new System.Drawing.Point(132, 424);
+            this.skillAddEffectButton.Name = "skillAddEffectButton";
+            this.skillAddEffectButton.Size = new System.Drawing.Size(82, 23);
+            this.skillAddEffectButton.TabIndex = 21;
+            this.skillAddEffectButton.Text = "Add Effect";
+            this.skillAddEffectButton.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(376, 358);
+            this.ClientSize = new System.Drawing.Size(428, 525);
             this.Controls.Add(this.mainFormTabControl);
             this.Controls.Add(this.dataSourceTextBox);
             this.Controls.Add(formMenuStrip);
             this.MainMenuStrip = formMenuStrip;
+            this.MinimumSize = new System.Drawing.Size(382, 39);
             this.Name = "MainForm";
             this.Text = "Worldsmith Game Design";
             formMenuStrip.ResumeLayout(false);
@@ -423,6 +483,9 @@
         private System.Windows.Forms.ComboBox skillTargetOptionsComboBox;
         private System.Windows.Forms.NumericUpDown skillRangeNumericUpDown;
         private System.Windows.Forms.CheckBox skillRequiresLineOfSightCheckBox;
+        private System.Windows.Forms.CheckBox skillAttackCheckBox;
+        private System.Windows.Forms.ListBox skillEffectsListBox;
+        private System.Windows.Forms.Button skillAddEffectButton;
 
 
     }
